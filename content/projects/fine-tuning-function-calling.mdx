@@ -1,0 +1,54 @@
+---
+title: "Fine tuning small LLMs for function calling"
+company: "Emumba"
+summary: "Fine tuned Qwen 2.5 3B and Mistral 7B for function calling and RAG tool use, with a DSPy evaluation loop to measure and improve them."
+problem: "Off the shelf models fell short on the structured tool calls the platform depended on."
+solution: "Domain specific fine tuning of two small models, measured with a repeatable DSPy evaluation and prompt optimization workflow."
+metrics:
+  - { value: "2", label: "models fine tuned (3B and 7B)" }
+  - { value: "Smaller", label: "and cheaper models in production" }
+role: "AI Software Engineer"
+timeline: "Mar 2025 to Sep 2025"
+tags: ["Fine tuning", "Qwen 2.5", "Mistral 7B", "DSPy", "Tool calling", "Evaluation"]
+order: 5
+nda: true
+---
+
+## The problem
+
+A multi agent platform lives or dies on tool calls. A model that returns almost valid JSON, picks the wrong function or invents an argument breaks the whole chain. Evaluating off the shelf models across domain specific tasks showed exactly **where they fell short on structured tool calls**.
+
+## Approach
+
+<Flow
+  steps={[
+    { label: "Evaluate", detail: "baseline on domain tasks" },
+    { label: "Curate", detail: "tool call training data" },
+    { label: "Fine tune", detail: "Qwen 2.5 3B, Mistral 7B" },
+    { label: "DSPy loop", detail: "evaluate and optimise prompts" },
+    { label: "Ship", detail: "smaller, cheaper models" }
+  ]}
+/>
+
+## Key engineering decisions
+
+<Decision title="Small models, tuned for the job">
+A 3B or 7B model that reliably does one job is cheaper and faster to serve than a large general model. Tuning **Qwen 2.5 3B and Mistral 7B** gave the platform models built for the function calls it actually needed.
+</Decision>
+
+<Decision title="Evaluation before training">
+Measuring off the shelf behaviour first meant the fine tuning targeted real failure modes rather than guesses, and gave a baseline to prove improvement against.
+</Decision>
+
+<Decision title="DSPy instead of manual prompt tweaking">
+A systematic DSPy evaluation and prompt optimization workflow made progress **measurable and repeatable**, improving retrieval quality and response grounding without manual trial and error.
+</Decision>
+
+## Results
+
+- Smaller, cheaper models tuned to perform the function calling tasks the platform needed.
+- A repeatable, evidence based path to better fine tuning results for the team.
+
+## What I would do next
+
+Publish an open benchmark of structured tool call failures for small models, and a results chart comparing tuned and base models on it.

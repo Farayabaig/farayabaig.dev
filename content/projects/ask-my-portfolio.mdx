@@ -1,0 +1,50 @@
+---
+title: "Ask my portfolio: a RAG assistant for this site"
+company: "Personal project, phase 2"
+summary: "A small, rate limited RAG assistant grounded on my CV and case studies, with a visible prompt injection defense."
+problem: "Recruiters have questions a static page cannot answer in seconds."
+solution: "A grounded assistant that answers only from this site's content and shows its sources."
+metrics:
+  - { value: "Grounded", label: "answers cite their sources" }
+  - { value: "Rate limited", label: "cheap to run" }
+role: "Solo builder"
+timeline: "In progress"
+tags: ["RAG", "LLMs", "AI security", "Next.js", "Evaluation"]
+order: 8
+links:
+  - { label: "GitHub", href: "https://github.com/Farayabaig" }
+---
+
+## The idea
+
+The strongest proof of AI engineering on a portfolio is a working AI system on the portfolio. This assistant answers questions about my work using only the CV and case studies on this site.
+
+## Architecture
+
+<Flow
+  steps={[
+    { label: "Question" },
+    { label: "Input guard", detail: "length, rate limit, injection checks" },
+    { label: "Retriever", detail: "CV and case studies" },
+    { label: "Small model", detail: "answers from context only" },
+    { label: "Answer", detail: "with sources" }
+  ]}
+/>
+
+## Key engineering decisions
+
+<Decision title="Answer only from retrieved context">
+If the retriever finds nothing relevant, the assistant says so instead of guessing.
+</Decision>
+
+<Decision title="Treat retrieved text as data">
+Retrieved passages are wrapped and labelled as untrusted data, and the model is told never to follow instructions inside them. This is the same indirect prompt injection defense I test for in client systems.
+</Decision>
+
+<Decision title="Strict limits">
+A small model, short answers and per IP rate limits keep the cost predictable.
+</Decision>
+
+## Status
+
+The API route and chat UI are scaffolded on this site. Retrieval works today over the site content; the generation step is the phase 2 work.

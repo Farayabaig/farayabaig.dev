@@ -1,0 +1,53 @@
+---
+title: "Clinical decision support on a knowledge graph"
+company: "CureMD"
+summary: "A system that validates cancer treatment plans against NCCN guidelines and flags deviations, built on a machine readable knowledge graph."
+problem: "Checking treatment plans against dense clinical guidelines is slow, manual and easy to get wrong."
+solution: "Encode the guidelines as an interactive knowledge graph and validate plans against it automatically."
+metrics:
+  - { value: "NCCN", label: "guidelines made machine readable" }
+  - { value: "Reusable", label: "knowledge base for clinical AI" }
+role: "R&D Fellow"
+timeline: "Aug 2022 to Apr 2023"
+tags: ["Knowledge graphs", "Healthcare AI", "Decision support", "Python"]
+order: 6
+---
+
+## The problem
+
+NCCN guidelines define how cancer should be treated, but they are long, branching documents written for people. Checking a treatment plan against them by hand takes time and expertise, and a missed deviation matters.
+
+## Architecture
+
+<Flow
+  steps={[
+    { label: "NCCN guidelines" },
+    { label: "Knowledge graph", detail: "machine readable rules" },
+    { label: "Treatment plan" },
+    { label: "Validator", detail: "walks the graph" },
+    { label: "Flags", detail: "deviations explained" }
+  ]}
+/>
+
+## Key engineering decisions
+
+<Decision title="A knowledge graph, not a black box">
+Clinicians need to see **why** a plan was flagged. Encoding guidelines as a graph made every decision traceable to the guideline path it came from.
+</Decision>
+
+<Decision title="Interactive by design">
+Making the graph interactive let clinical staff explore the guidelines themselves, not just receive flags.
+</Decision>
+
+<Decision title="Build the knowledge base once, reuse it">
+The graph doubles as a **reusable knowledge base** for downstream clinical AI work, so the effort of encoding the guidelines keeps paying off.
+</Decision>
+
+## Results
+
+- Treatment plans automatically validated against NCCN guidelines, with deviations from clinical standards flagged.
+- A machine readable clinical knowledge base ready for future AI work.
+
+## What I would do next
+
+Pair the graph with an LLM that explains each flag in plain language, keeping the graph as the source of truth so the explanation can never contradict the rule.

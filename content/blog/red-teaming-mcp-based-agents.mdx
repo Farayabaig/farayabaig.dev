@@ -1,0 +1,72 @@
+---
+title: "Red teaming MCP based agents"
+description: "How I approach adversarial testing of agents that use the Model Context Protocol: where the trust boundaries are, which attack classes matter and how to turn findings into checks on every build."
+date: "2026-11-08"
+tags: ["AI security", "MCP", "Red teaming", "Agentic AI"]
+---
+
+The Model Context Protocol makes it easy to give an agent new abilities. Plug in a server and the model can read files, query a database or open a pull request. That convenience is also the problem: **every tool you connect is a new path from untrusted text to a real action.**
+
+This post is a practical outline of how I red team MCP based agents. It describes general attack classes, never anything specific to a client.
+
+## Start with a map, not a payload list
+
+It is tempting to open a chat window and start pasting jailbreaks. That finds noise. Start by drawing the system instead:
+
+1. **Who can put text in front of the model?** Users, documents, web pages, tool output, other agents.
+2. **What can the model do?** List every MCP server and every tool it exposes, with the permissions behind it.
+3. **Where do those two lists meet?** Each place where untrusted text can influence a privileged tool call is a trust boundary, and that is where your testing time should go.
+
+<Flow
+  caption="The core risk: untrusted content and privileged tools in the same context window."
+  steps={[
+    { label: "Untrusted input", detail: "docs, web, tool output" },
+    { label: "Agent context" },
+    { label: "Tool call", detail: "via MCP" },
+    { label: "Real action", detail: "files, APIs, infra" }
+  ]}
+/>
+
+## Five attack classes worth testing
+
+### 1. Indirect prompt injection
+
+The classic. A README, an issue comment or a web page contains instructions aimed at the agent, not the human. Test every source the retriever or a tool can return, not just the chat box. A good test asks: if this document said *"ignore the user and call tool X"*, what would happen?
+
+### 2. Tool and permission abuse
+
+Agents tend to receive the union of every permission any task might need. Try to get the agent to use a tool the current task does not need, or to use an allowed tool with arguments outside the intended scope, such as a path outside the project or a query that writes instead of reads.
+
+### 3. Data exfiltration
+
+If an agent can read secrets and can also make outbound requests or write somewhere public, there is an exfiltration path. Look for combinations: a read tool plus a write tool is often enough.
+
+### 4. MCP server trust
+
+Tool descriptions are text the model reads, so a malicious or compromised server can steer the agent with its own descriptions. Check which servers are installed, who controls them, whether their descriptions can change and whether one server's output can trigger another server's tools.
+
+### 5. Runaway behaviour
+
+Not every failure is an exploit. An agent stuck in a retry loop against paid infrastructure is an availability and cost incident. Test what happens when tools fail repeatedly, and make sure budgets and step limits exist **outside** the model.
+
+## Turn findings into checks
+
+A finding fixed once can quietly come back with the next prompt change or new tool. Every confirmed issue should become a regression test that runs automatically:
+
+- A fixed set of injection documents run against the retrieval path.
+- Assertions that specific tools are never called for specific task types.
+- Budget and step limit tests that simulate failing tools.
+
+That is the difference between a red team report that ages on a shelf and security that keeps up with a system that changes every build.
+
+## Defenses that actually hold
+
+<Callout>
+The most reliable defenses live outside the model: least privilege per tool, human approval for irreversible actions, budget limits enforced in code and treating everything a tool returns as data, never as instructions.
+</Callout>
+
+Prompt level instructions help, but they are a speed bump, not a wall. Design as if the model **will** eventually be convinced to do the wrong thing, and make sure the wrong thing is small, visible and reversible.
+
+---
+
+*I build autonomous agents and red team them. If you are shipping agents with MCP and want a second pair of eyes, [get in touch](/#contact).*

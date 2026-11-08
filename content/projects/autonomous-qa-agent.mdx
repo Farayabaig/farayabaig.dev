@@ -1,0 +1,64 @@
+---
+title: "Autonomous QA Agent for the NOVA microhypervisor"
+company: "Ebryx, for BlueRock.io"
+summary: "An agent that self qualifies hypervisor builds across 29 hardware configurations and cloud bare metal, turning multi hour supervised test cycles into minutes."
+problem: "Every NOVA build needed an engineer to babysit a multi hour qualification run across a large hardware matrix."
+solution: "An autonomous QA agent, driven from Slack in plain language, that plans the runs, executes them, retries smartly and reports back."
+metrics:
+  - { value: "29", label: "hardware configurations" }
+  - { value: "Hours → min", label: "per qualification cycle" }
+  - { value: "Every build", label: "AI security scanning" }
+role: "AI Software Engineer, design and implementation"
+timeline: "Oct 2025 to present"
+tags: ["Agentic AI", "Python", "Slack bot", "Cloud bare metal", "MCP", "AI security"]
+featured: true
+order: 1
+nda: true
+---
+
+## The problem
+
+NOVA is a microhypervisor, so every build has to be proven on real hardware before anyone can trust it. Qualification meant running suites across **29 hardware configurations and cloud bare metal servers**, with an engineer supervising for hours: kicking off runs, watching for hangs, rerunning flaky jobs and stitching the results together. That is expensive senior time spent on work that follows a predictable pattern, which makes it a strong fit for an agent.
+
+## Architecture
+
+<Flow
+  caption="High level flow. Client code is under NDA; architecture shared at a high level."
+  steps={[
+    { label: "Slack command", detail: "plain language request" },
+    { label: "Parser", detail: "intent, targets, options" },
+    { label: "Planner", detail: "builds a run plan" },
+    { label: "Guardrails", detail: "budget and safety checks" },
+    { label: "Runners", detail: "29 configs and bare metal" },
+    { label: "Verifier", detail: "failure aware retries" },
+    { label: "Report", detail: "back to Slack" }
+  ]}
+/>
+
+An engineer asks for a test run in Slack the way they would ask a colleague. The agent parses the request into a structured intent, plans which configurations and suites to run, checks the plan against budget guardrails and then fans the work out to the runners. A verification step separates real failures from flaky ones and retries only where a retry can actually change the outcome. The result comes back to the same Slack thread as a readable report.
+
+## Key engineering decisions
+
+<Decision title="Slack as the interface, not a new dashboard">
+Engineers already lived in Slack. Natural language command parsing meant **zero onboarding**: anyone on the team could self serve a test run on demand without learning a new tool or waiting for the one person who knew the scripts.
+</Decision>
+
+<Decision title="Budget guardrails before execution, not after">
+Cloud bare metal is expensive and an agent that loops is a cost incident waiting to happen. Every plan is checked against spend limits **before** any machine is provisioned, so the agent can never burn budget on its own initiative.
+</Decision>
+
+<Decision title="Failure aware retries instead of blind reruns">
+Blind reruns hide real bugs and waste machine hours. The agent classifies failures first and only retries when the evidence points at flakiness, which **cut cloud spend and reduced flaky reruns**.
+</Decision>
+
+## Results
+
+- Multi hour, engineer supervised qualification cycles reduced to **a few minutes**.
+- Self serve test runs on demand for the whole team.
+- Lower cloud spend and fewer flaky reruns thanks to guardrails and smarter retries.
+- Automated AI security scanning added to LLM deployments, replacing periodic manual review with **checks on every build**.
+
+## What I would do next
+
+Feed historical run data back into the planner so it can prioritise the configurations most likely to fail for a given change, and expose the agent's decisions as a trace that reviewers can audit after the fact.
+

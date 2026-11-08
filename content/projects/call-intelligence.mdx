@@ -1,0 +1,61 @@
+---
+title: "Call intelligence: from raw audio to business insight"
+company: "Afiniti"
+summary: "Speech to text on Canary-1B and Whisper under 5% WER, feeding intent, sentiment, emotion, summarization and offer detection models at 95%+ accuracy."
+problem: "Call review and reporting were manual, so analytics could only grow by adding headcount."
+solution: "A transcription layer with domain specific validation, feeding a suite of production NLP models."
+metrics:
+  - { value: "< 5%", label: "word error rate" }
+  - { value: "95%+", label: "NLP model accuracy" }
+  - { value: "~50%", label: "faster data labeling" }
+role: "AI Software Engineer"
+timeline: "Jul 2023 to Mar 2025"
+tags: ["Speech AI", "NLP", "Whisper", "Canary-1B", "LLMs", "LangChain", "Phi-3"]
+featured: true
+order: 3
+nda: true
+---
+
+## The problem
+
+Customer calls held the answers the business wanted: why people called, how they felt and whether an offer landed. Getting those answers meant people listening to calls and filling in reports. That does not scale, and every downstream analytics idea depended on transcripts nobody fully trusted.
+
+## Architecture
+
+<Flow
+  caption="One reliable transcription layer feeds every downstream model."
+  steps={[
+    { label: "Call audio" },
+    { label: "STT", detail: "Canary-1B and Whisper" },
+    { label: "Validation", detail: "NER and numerical accuracy" },
+    { label: "NLP models", detail: "intent, sentiment, emotion" },
+    { label: "Summaries", detail: "and offer detection" },
+    { label: "Analytics" }
+  ]}
+/>
+
+## Key engineering decisions
+
+<Decision title="Validate what matters, not just average WER">
+A low overall word error rate can still hide wrong names and wrong numbers, and those are exactly what analytics depends on. Domain specific validation for **NER and numerical accuracy** made transcripts trustworthy for other teams to build on.
+</Decision>
+
+<Decision title="LLMs for labeling, people for review">
+Labeling was the bottleneck in model development. Using **Mistral and LLaMA-3** to pre label data cut labeling turnaround by about half, while keeping humans in the loop for quality.
+</Decision>
+
+<Decision title="Small models where they are enough">
+For the customer support assistant demoed to Salesforce, LangChain with **Phi-3** showed that intent aware automated responses do not need a frontier model to be useful.
+</Decision>
+
+## Results
+
+- Transcription under **5% word error rate**, a reliable layer feeding all downstream analytics.
+- Intent, sentiment, emotion, summarization and outcome or offer detection at **95%+ accuracy**, automating manual call review.
+- Data labeling turnaround cut by **~50%**.
+- Intent aware support assistant demoed to Salesforce, a proof point for enterprise deals.
+- A telecom churn prediction model at **96% accuracy** that flagged at risk customers early.
+
+## What I would do next
+
+Add streaming transcription for real time agent assist, and per segment monitoring so accuracy drops on new accents or products are caught before they reach reports.

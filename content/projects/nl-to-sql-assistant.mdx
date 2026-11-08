@@ -1,0 +1,50 @@
+---
+title: "Natural language to SQL assistant"
+company: "Personal project"
+summary: "CrewAI agents that turn plain language questions into SQL, run them on PostgreSQL and return structured JSON."
+problem: "Getting answers from a database still requires knowing SQL and the schema."
+solution: "A small crew of agents that understands the question, writes safe SQL, runs it and returns clean JSON."
+metrics:
+  - { value: "JSON", label: "structured results" }
+  - { value: "Public", label: "code and demo" }
+role: "Solo builder"
+timeline: "Personal project"
+tags: ["CrewAI", "PostgreSQL", "Agentic AI", "Python"]
+order: 7
+links:
+  - { label: "GitHub", href: "https://github.com/Farayabaig" }
+---
+
+## The problem
+
+Most people who need data cannot write SQL, and those who can still need to know the schema. A natural language interface removes that barrier, if it is safe and its output is predictable.
+
+## Architecture
+
+<Flow
+  steps={[
+    { label: "Question", detail: "plain language" },
+    { label: "Schema agent", detail: "finds relevant tables" },
+    { label: "SQL agent", detail: "writes the query" },
+    { label: "Execute", detail: "PostgreSQL" },
+    { label: "JSON result" }
+  ]}
+/>
+
+## Key engineering decisions
+
+<Decision title="Agents with narrow roles">
+CrewAI made it natural to split schema understanding from query writing, which keeps each prompt small and each failure easy to locate.
+</Decision>
+
+<Decision title="Structured JSON output">
+Returning **structured JSON** instead of free text means the results can feed other tools and UIs directly.
+</Decision>
+
+<Decision title="Safety on the database side">
+An LLM writing SQL should never be trusted with write access. A read only database role is the guardrail that cannot be prompt injected away.
+</Decision>
+
+## What I would do next
+
+Add a small evaluation set of question and SQL pairs, a hosted live demo and query explanations so users can check what was run.

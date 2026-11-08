@@ -1,0 +1,60 @@
+---
+title: "Genie Mentor: multi agent RAG onboarding platform"
+company: "Emumba"
+summary: "A source grounded onboarding assistant where planner, retriever, executor, evaluator and editor agents answer engineering questions across GitHub, Notion and Confluence."
+problem: "Onboarding ran on tribal knowledge spread across three tools, and senior engineers paid for it in interruptions."
+solution: "A multi agent RAG platform over MCP tool interfaces that turns three silos into one self serve query path."
+metrics:
+  - { value: "50%+", label: "fewer senior support hours" }
+  - { value: "3 → 1", label: "knowledge silos into one query path" }
+  - { value: "5", label: "specialised agent roles" }
+role: "AI Software Engineer, architect and lead developer"
+timeline: "Mar 2025 to Sep 2025"
+tags: ["Multi agent systems", "RAG", "MCP", "LLMs", "Python"]
+featured: true
+order: 2
+nda: true
+---
+
+## The problem
+
+New engineers learned the codebase by asking people. The answers existed, but they were scattered across **GitHub, Notion and Confluence**, and finding them meant knowing where to look. The cost landed on senior engineers, who spent a large share of their week answering the same onboarding questions.
+
+## Architecture
+
+<Flow
+  caption="Each role is a separate agent with a narrow job and its own checks."
+  steps={[
+    { label: "Planner", detail: "breaks the question down" },
+    { label: "Retriever", detail: "MCP tools: GitHub, Notion, Confluence" },
+    { label: "Executor", detail: "assembles the answer" },
+    { label: "Evaluator", detail: "checks grounding" },
+    { label: "Editor", detail: "cites and polishes" }
+  ]}
+/>
+
+A question first goes to a planner that decides which sources matter and in what order. The retriever reaches GitHub, Notion and Confluence through MCP tool interfaces, so adding a new source means adding a tool rather than rewriting the pipeline. The executor drafts an answer, the evaluator checks that every claim is grounded in retrieved material, and the editor produces the final, cited response.
+
+## Key engineering decisions
+
+<Decision title="Separate agent roles instead of one large prompt">
+A single prompt doing planning, retrieval and checking is hard to debug. Splitting the work into **planner, retriever, executor, evaluator and editor** made each step observable and testable on its own.
+</Decision>
+
+<Decision title="MCP for every data source">
+Using MCP tool interfaces for GitHub, Notion and Confluence gave one consistent contract for all sources and kept the agents independent of each tool's API quirks.
+</Decision>
+
+<Decision title="Grounding over fluency">
+For onboarding, a confident wrong answer is worse than no answer. The evaluator step rejects drafts that are not supported by retrieved sources, which is what made the system **source grounded** rather than just helpful sounding.
+</Decision>
+
+## Results
+
+- Senior engineer support hours reduced by **over 50%**.
+- Three siloed sources unified into **one query path** for engineering questions.
+- A shorter onboarding cycle, replacing ad hoc tribal knowledge with a self serve system.
+
+## What I would do next
+
+Add answer feedback from new hires into the evaluation set, and track which questions repeat so the team can fix the underlying documentation instead of answering forever.

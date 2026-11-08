@@ -1,0 +1,63 @@
+---
+title: "Red teaming agentic and MCP systems"
+company: "Ebryx, for BlueRock.io"
+summary: "Adversarial testing and threat modeling across LLMs, agent frameworks and MCP based systems, plus automated AI security scanning on every build."
+problem: "Agentic systems add new attack surface: tools, memory and untrusted content flowing into prompts."
+solution: "Structured threat modeling and adversarial testing, with the findings turned into automated checks in the build."
+metrics:
+  - { value: "Every build", label: "automated AI security checks" }
+  - { value: "Real", label: "attack vectors found before exploitation" }
+role: "AI Software Engineer, AI security"
+timeline: "Oct 2025 to present"
+tags: ["AI security", "Red teaming", "Threat modeling", "MCP", "LLMs"]
+order: 4
+nda: true
+---
+
+## The problem
+
+When an LLM can call tools, every piece of text it reads becomes a possible instruction. Agent frameworks and MCP servers connect models to files, APIs and infrastructure, so a weakness is no longer a bad answer; it is an action taken on someone's behalf. Periodic manual reviews cannot keep up with systems that change every build.
+
+## Approach
+
+<Flow
+  steps={[
+    { label: "Map", detail: "agents, tools, data flows" },
+    { label: "Threat model", detail: "trust boundaries" },
+    { label: "Attack", detail: "adversarial test cases" },
+    { label: "Fix", detail: "with the owning team" },
+    { label: "Automate", detail: "checks on every build" }
+  ]}
+/>
+
+## Attack classes I look for
+
+These are the general classes of issue covered in this kind of work. Client specifics stay private.
+
+- **Prompt injection, direct and indirect**: instructions hidden in documents, web pages or tool output.
+- **Tool and permission abuse**: an agent coerced into calling tools beyond what the task needs.
+- **Data exfiltration paths**: secrets or private context leaking through tool calls or responses.
+- **MCP trust issues**: over privileged servers, unverified tool descriptions and confused deputy problems.
+- **Runaway behaviour**: loops and retries that turn into cost or availability incidents.
+
+## Key engineering decisions
+
+<Decision title="Threat model first, payloads second">
+Throwing jailbreak lists at a model finds noise. Mapping trust boundaries first shows **where** untrusted content meets privileged actions, and that is where testing time pays off.
+</Decision>
+
+<Decision title="Turn findings into regression tests">
+A finding that is fixed once can come back. Each confirmed issue became an automated check, which is how security moved from periodic manual review to **checks on every build**.
+</Decision>
+
+<Decision title="Describe classes publicly, keep specifics private">
+Sharing attack classes helps the community; sharing a client's specific weaknesses would harm them. This page follows that rule.
+</Decision>
+
+## Results
+
+- Real attack vectors in AI pipelines uncovered **before they could be exploited**.
+- Automated AI security scanning built into LLM deployments, identifying gaps in agentic systems on **every build**.
+
+Read more in [Red teaming MCP based agents](/blog/red-teaming-mcp-based-agents).
+
