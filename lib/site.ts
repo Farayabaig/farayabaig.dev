@@ -256,7 +256,7 @@ export const education = {
 };
 
 /**
- * Add certifications here as you earn them; the section renders them
+ * Add certifications here as you earn them; /cv renders them
  * automatically. Left empty because the resume lists none.
  */
 export const certifications: { name: string; issuer: string; year: string; url?: string }[] = [];

@@ -6,7 +6,6 @@ import { Architecture } from "@/components/sections/architecture";
 import { About } from "@/components/sections/about";
 import { Skills } from "@/components/sections/skills";
 import { Writing } from "@/components/sections/writing";
-import { Credentials } from "@/components/sections/credentials";
 import { Contact } from "@/components/sections/contact";
 import { site } from "@/lib/site";
 
@@ -20,7 +19,6 @@ const personJsonLd = {
   description: site.description,
   address: { "@type": "PostalAddress", addressLocality: "Riyadh", addressCountry: "SA" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "FAST National University of Computer and Emerging Sciences" },
-  worksFor: { "@type": "Organization", name: "Ebryx" },
   sameAs: [site.linkedin, site.github],
   knowsAbout: [
     "Agentic AI",
@@ -48,7 +46,6 @@ export default function HomePage() {
       <About />
       <Skills />
       <Writing />
-      <Credentials />
       <Contact />
     </>
   );

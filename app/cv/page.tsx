@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Download } from "lucide-react";
-import { education, experience, site, skills } from "@/lib/site";
+import { certifications, education, experience, site, skills } from "@/lib/site";
 import { getProjects } from "@/lib/content";
 import { MarketCV } from "@/components/market-cv";
 import { Button } from "@/components/ui/button";
@@ -90,6 +90,23 @@ export default function CVPage() {
               {education.start} to {education.end}
             </p>
           </section>
+          {certifications.length ? (
+            <section aria-labelledby="cv-certs">
+              <h2 id="cv-certs" className="text-xl">
+                Certifications
+              </h2>
+              <ul className="mt-3 space-y-3">
+                {certifications.map((c) => (
+                  <li key={c.name}>
+                    <p className="font-medium">{c.url ? <a href={c.url} className="hover:underline">{c.name}</a> : c.name}</p>
+                    <p className="text-sm text-muted">
+                      {c.issuer} · {c.year}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
           <section aria-labelledby="cv-skills">
             <h2 id="cv-skills" className="text-xl">
               Skills

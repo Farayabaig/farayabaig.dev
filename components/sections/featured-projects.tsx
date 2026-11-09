@@ -29,7 +29,7 @@ export function FeaturedProjects() {
                 className="flex h-full flex-col gap-1 p-4 transition-colors hover:bg-bg"
               >
                 <span className="font-medium text-fg">{p.title}</span>
-                <span className="text-sm text-muted">{p.company}</span>
+                <span className="text-sm text-muted">{p.context}</span>
               </Link>
             </li>
           ))}

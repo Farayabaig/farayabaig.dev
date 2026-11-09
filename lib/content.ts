@@ -8,6 +8,8 @@ export type ProjectMeta = {
   slug: string;
   title: string;
   company: string;
+  /** Employer free label used on the home page. */
+  context: string;
   summary: string;
   problem: string;
   solution: string;

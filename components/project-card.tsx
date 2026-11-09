@@ -12,7 +12,7 @@ export function ProjectCard({ project, large = false }: { project: ProjectMeta; 
         large && "md:p-7",
       )}
     >
-      <p className="font-mono text-xs text-muted">{project.company}</p>
+      <p className="font-mono text-xs text-muted">{project.context}</p>
       <h3 className={cn("mt-2 font-semibold", large ? "text-xl md:text-[1.4rem]" : "text-lg")}>
         <Link href={`/projects/${project.slug}`} className="after:absolute after:inset-0 after:rounded-[12px]">
           {project.title}
