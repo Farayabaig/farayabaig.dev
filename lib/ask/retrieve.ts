@@ -8,13 +8,13 @@ let cache: Chunk[] | null = null;
 /** Splits site content into paragraph sized chunks. Phase 2: swap for embeddings + pgvector. */
 function chunks(): Chunk[] {
   if (cache) return cache;
-  const out: Chunk[] = [{ id: "about", title: "About", text: about, href: "/#experience" }];
+  const out: Chunk[] = [{ id: "about", title: "About", text: about, href: "/#about" }];
   for (const r of experience) {
     out.push({
       id: `role-${r.company.toLowerCase()}`,
       title: `${r.title}, ${r.company} (${r.start} to ${r.end})`,
       text: r.highlights.join(" "),
-      href: "/#experience",
+      href: "/#about",
     });
   }
   for (const p of pillars) out.push({ id: `pillar-${p.id}`, title: p.title, text: `${p.body} ${p.tools.join(", ")}`, href: "/#what-i-do" });

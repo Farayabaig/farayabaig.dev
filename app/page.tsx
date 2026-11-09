@@ -3,7 +3,7 @@ import { ProofStrip } from "@/components/sections/proof-strip";
 import { FeaturedProjects } from "@/components/sections/featured-projects";
 import { WhatIDo } from "@/components/sections/what-i-do";
 import { Architecture } from "@/components/sections/architecture";
-import { Experience } from "@/components/sections/experience";
+import { About } from "@/components/sections/about";
 import { Skills } from "@/components/sections/skills";
 import { Writing } from "@/components/sections/writing";
 import { Credentials } from "@/components/sections/credentials";
@@ -45,7 +45,7 @@ export default function HomePage() {
       <FeaturedProjects />
       <WhatIDo />
       <Architecture />
-      <Experience />
+      <About />
       <Skills />
       <Writing />
       <Credentials />

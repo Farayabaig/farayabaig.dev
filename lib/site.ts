@@ -51,7 +51,7 @@ export const site = {
 
 export const nav = [
   { href: "/#projects", label: "Projects" },
-  { href: "/#experience", label: "Experience" },
+  { href: "/#about", label: "About" },
   { href: "/blog", label: "Writing" },
   { href: "/cv", label: "CV" },
   { href: "/#contact", label: "Contact" },
@@ -111,13 +111,73 @@ export const pillars = [
 ] as const;
 
 export const about =
-  "My first AI system checked cancer treatment plans against NCCN guidelines. At CureMD I built a clinical decision support system on a knowledge graph that flagged deviations from clinical standards. That taught me what I still care about most: automating decisions people rely on. At Afiniti I moved into conversational AI, building speech to text pipelines under 5% word error rate and NLP models at 95%+ accuracy that replaced manual call review. At Emumba I built multi agent RAG systems and fine tuned LLMs for tool use. Today at Ebryx I build autonomous agents and red team them, so they are both useful and safe.";
+  "My first AI system checked cancer treatment plans against NCCN guidelines: a clinical decision support system on a knowledge graph that flagged deviations from clinical standards. That taught me what I still care about most: automating decisions people rely on. From healthcare I moved into conversational AI, building speech to text pipelines under 5% word error rate and NLP models at 95%+ accuracy that replaced manual call review. Then came multi agent RAG systems and fine tuned LLMs for tool use. Today I build autonomous agents and red team them, so they are both useful and safe.";
 
-export const arc = [
-  { step: "Automate decisions", where: "CureMD" },
-  { step: "Understand conversations", where: "Afiniti" },
-  { step: "Orchestrate agents", where: "Emumba" },
-  { step: "Ship and secure agents", where: "Ebryx" },
+/** Home page career story. Employer names stay on /cv only. */
+export type Chapter = {
+  period: string;
+  theme: string;
+  question: string;
+  built: string;
+  metric: { value: string; label: string };
+  project: string;
+};
+
+export const chapters: Chapter[] = [
+  {
+    period: "2022 to 2023",
+    theme: "Healthcare AI",
+    question: "Can software check a clinical decision?",
+    built:
+      "Encoded NCCN cancer guidelines as a machine readable knowledge graph that flags treatment plans deviating from clinical standards.",
+    metric: { value: "NCCN", label: "guidelines made machine readable" },
+    project: "clinical-decision-support",
+  },
+  {
+    period: "2023 to 2025",
+    theme: "Conversational AI",
+    question: "Can a machine understand a phone call?",
+    built:
+      "Built speech to text on Canary-1B and Whisper, feeding intent, sentiment, emotion and summarization models that replaced manual call review.",
+    metric: { value: "< 5% WER", label: "with 95%+ accurate NLP models" },
+    project: "call-intelligence",
+  },
+  {
+    period: "2025",
+    theme: "Multi agent systems",
+    question: "Can agents answer what only senior engineers know?",
+    built:
+      "Built a multi agent RAG onboarding platform over GitHub, Notion and Confluence, and fine tuned small LLMs for reliable tool calling.",
+    metric: { value: "50%+", label: "fewer senior support hours" },
+    project: "genie-mentor",
+  },
+  {
+    period: "2025 to now",
+    theme: "Agentic AI and security",
+    question: "Can an agent do the work, and stay safe?",
+    built:
+      "Built an autonomous QA agent that qualifies builds across 29 hardware configurations, and red teamed LLM, agent and MCP systems.",
+    metric: { value: "Hours → min", label: "per qualification cycle" },
+    project: "autonomous-qa-agent",
+  },
+];
+
+export const principles = [
+  {
+    title: "Guardrails live outside the model",
+    evidence:
+      "My QA agent checks every plan against budget limits in code before a single machine is provisioned. Prompts can be talked around; code can't.",
+  },
+  {
+    title: "Measure before you tune",
+    evidence:
+      "I benchmarked off the shelf models on real tool calls before fine tuning Qwen 2.5 3B and Mistral 7B, then improved them with DSPy evaluation loops.",
+  },
+  {
+    title: "Security runs on every build",
+    evidence:
+      "Red team findings become automated checks in the pipeline, replacing periodic manual reviews that fall behind a system changing daily.",
+  },
 ];
 
 export type Role = {
