@@ -27,18 +27,12 @@ export function Counter({ value, prefix = "", suffix = "" }: { value: number; pr
     return () => cancelAnimationFrame(raf);
   }, [inView, reduced, value]);
 
+  // One text node only, so copy and paste gives "50%+" rather than "50%+50%+".
   return (
     <span ref={ref} className="tabular-nums">
-      <span className="sr-only">
-        {prefix}
-        {value}
-        {suffix}
-      </span>
-      <span aria-hidden="true">
-        {prefix}
-        {display}
-        {suffix}
-      </span>
+      {prefix}
+      {display}
+      {suffix}
     </span>
   );
 }

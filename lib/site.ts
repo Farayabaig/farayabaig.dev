@@ -64,19 +64,23 @@ export const hero = {
     "AI Engineer with 4+ years across agentic AI, conversational and speech AI, LLM fine tuning and AI security.",
 };
 
+/**
+ * Outcome metrics for the proof strip. Every number is stated on the resume;
+ * each one says what changed for the business, not just a count.
+ * `value` as a number counts up; as a string it is shown as is.
+ */
 export type Metric = {
-  value: number;
+  value: number | string;
   prefix?: string;
-  suffix: string;
+  suffix?: string;
   label: string;
-  estimated?: boolean;
 };
 
 export const proofMetrics: Metric[] = [
-  { value: 4, suffix: "+", label: "Years building AI systems" },
-  { value: 29, suffix: "", label: "Hardware configurations my QA agent qualifies" },
-  { value: 95, prefix: "~", suffix: "%", label: "Faster QA cycles, hours to minutes", estimated: true },
-  { value: 50, suffix: "%+", label: "Senior engineer support hours saved" },
+  { value: "Minutes", label: "Build qualification time, down from multi hour supervised runs" },
+  { value: 50, suffix: "%+", label: "Fewer senior engineer hours spent on onboarding support" },
+  { value: 5, prefix: "< ", suffix: "%", label: "Word error rate on production call audio" },
+  { value: 50, prefix: "~", suffix: "%", label: "Faster data labeling, automated with LLMs" },
 ];
 
 export const pillars = [

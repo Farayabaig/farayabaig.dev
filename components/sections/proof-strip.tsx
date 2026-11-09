@@ -9,8 +9,12 @@ export function ProofStrip() {
           {proofMetrics.map((m) => (
             <div key={m.label} className="flex flex-col-reverse justify-end gap-2 bg-bg px-4 py-8 sm:px-6">
               <dt className="text-[0.95rem] leading-snug text-muted md:text-base">{m.label}</dt>
-              <dd className="font-mono text-4xl font-semibold tracking-tight text-amber md:text-5xl">
-                <Counter value={m.value} prefix={m.prefix} suffix={m.suffix} />
+              <dd className="whitespace-nowrap font-mono text-[1.75rem] font-semibold tracking-tight text-amber sm:text-4xl lg:text-[2.6rem]">
+                {typeof m.value === "number" ? (
+                  <Counter value={m.value} prefix={m.prefix} suffix={m.suffix} />
+                ) : (
+                  m.value
+                )}
               </dd>
             </div>
           ))}
