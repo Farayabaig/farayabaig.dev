@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { site } from "@/lib/site";
 
 export const ogSize = { width: 1200, height: 630 };
 
@@ -29,7 +30,7 @@ export function renderOg({ kicker, title }: { kicker: string; title: string }) {
             <span style={{ fontWeight: 700 }}>Faraya Baig</span>
             <span style={{ color: "#8B98A5" }}>AI Engineer · Agentic AI · LLMs · AI Security</span>
           </div>
-          <span style={{ color: "#8B98A5" }}>farayabaig.dev</span>
+          <span style={{ color: "#8B98A5" }}>{new URL(site.url).host}</span>
         </div>
       </div>
     ),

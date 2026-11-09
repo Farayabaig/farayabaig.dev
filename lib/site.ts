@@ -9,7 +9,15 @@ export const site = {
   title: "Faraya Baig | AI Engineer, Agentic AI, LLMs and AI Security",
   description:
     "AI Engineer with 4+ years building autonomous agents, conversational and speech AI, fine tuned LLMs and AI security. Based in Riyadh, KSA, open to relocation anywhere.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://farayabaig.dev",
+  /**
+   * Canonical URL. Order: NEXT_PUBLIC_SITE_URL (set this once you own a domain),
+   * then Vercel's production URL (e.g. farayabaig-dev.vercel.app), then localhost.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
   email: "farayabaig05@gmail.com",
   linkedin: "https://www.linkedin.com/in/farayabaig05/",
   github: "https://github.com/Farayabaig",

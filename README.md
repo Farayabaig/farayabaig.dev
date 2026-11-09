@@ -60,7 +60,7 @@ Fonts: Space Grotesk (headings), Inter (body), JetBrains Mono (code, tags, metri
 
 | Env var | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL (default `https://farayabaig.dev`) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL. Optional: defaults to the Vercel production URL, so only set it once you own a custom domain |
 | `NEXT_PUBLIC_CALENDLY_URL` | Booking link; falls back to a prefilled email |
 
 ## Phase 2: Ask my portfolio
