@@ -55,7 +55,7 @@ export function MarketCV({ titles }: { titles: Record<string, string> }) {
         <p className="mt-1 text-sm text-muted">{cfg.locationLine}</p>
         <ul className="mt-5 space-y-2">
           {cfg.emphasis.map((e) => (
-            <li key={e} className="flex gap-2 text-[0.95rem] text-fg/90">
+            <li key={e} className="flex gap-2 text-base md:text-[1.0625rem] text-fg/90">
               <span aria-hidden="true" className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-accent" />
               {e}
             </li>

@@ -213,7 +213,7 @@ function Diagram({ active }: { active: number }) {
               x={57 + i * 82}
               y={218}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={10.5}
               className="font-mono"
               fill={active >= 4 ? "var(--fg)" : "var(--muted)"}
             >
@@ -258,7 +258,7 @@ export function Architecture() {
         <div className="mt-10 lg:grid lg:grid-cols-[1fr_1.1fr] lg:gap-14">
           <div className="sticky top-16 z-10 -mx-4 border-b border-border bg-bg/95 px-4 py-3 backdrop-blur-sm lg:order-2 lg:top-24 lg:mx-0 lg:h-fit lg:rounded-[12px] lg:border lg:bg-surface/40 lg:p-6">
             <Diagram active={active} />
-            <p className="mt-2 text-center font-mono text-xs text-muted" aria-live="polite">
+            <p className="mt-2 text-center font-mono text-[0.8125rem] text-muted" aria-live="polite">
               step {String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
               <span className="hidden sm:inline"> · {steps[active].title}</span>
             </p>
@@ -275,7 +275,7 @@ export function Architecture() {
                 className="flex min-h-[45vh] flex-col justify-center border-l border-border py-8 pl-6 lg:min-h-[50vh]"
                 style={{ borderColor: i === active ? "var(--accent)" : undefined }}
               >
-                <span className="font-mono text-xs text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-[0.8125rem] text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className={cn("mt-2 text-xl font-semibold transition-colors", i === active ? "text-fg" : "text-muted")}>
                   {s.title}
                 </h3>

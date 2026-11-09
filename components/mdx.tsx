@@ -11,7 +11,7 @@ function Flow({ steps, caption }: { steps: { label: string; detail?: string }[];
         {steps.map((s, i) => (
           <li key={s.label} className="flex flex-col items-center md:flex-1 md:flex-row">
             <div className="w-full rounded-[12px] border border-border bg-surface p-3 text-center md:h-full">
-              <div className="font-mono text-[0.7rem] text-accent-strong">{String(i + 1).padStart(2, "0")}</div>
+              <div className="font-mono text-[0.8rem] text-accent-strong">{String(i + 1).padStart(2, "0")}</div>
               <div className="mt-1 text-sm font-semibold text-fg">{s.label}</div>
               {s.detail ? <div className="mt-1 text-xs leading-snug text-muted">{s.detail}</div> : null}
             </div>
@@ -33,7 +33,7 @@ function Callout({ children, tone = "accent" }: { children: React.ReactNode; ton
   return (
     <div
       className={cn(
-        "not-prose my-6 rounded-[12px] border-l-2 bg-surface p-4 text-[0.95rem] text-fg",
+        "not-prose my-6 rounded-[12px] border-l-2 bg-surface p-4 text-base md:text-[1.0625rem] text-fg",
         tone === "amber" ? "border-amber" : "border-accent",
       )}
     >
@@ -46,7 +46,7 @@ function Decision({ title, children }: { title: string; children: React.ReactNod
   return (
     <div className="not-prose my-4 rounded-[12px] border border-border bg-surface p-5">
       <h3 className="text-base font-semibold">{title}</h3>
-      <div className="mt-2 text-[0.95rem] leading-relaxed text-muted [&_strong]:text-fg">{children}</div>
+      <div className="mt-2 text-base md:text-[1.0625rem] leading-relaxed text-muted [&_strong]:text-fg">{children}</div>
     </div>
   );
 }

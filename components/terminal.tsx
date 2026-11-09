@@ -49,13 +49,13 @@ export function Terminal() {
   return (
     <div
       aria-hidden="true"
-      className="overflow-hidden rounded-[12px] border border-border bg-surface/90 font-mono text-[0.8rem] leading-6 shadow-[0_0_0_1px_rgb(0_0_0/0.02)] backdrop-blur-sm sm:text-[0.85rem]"
+      className="overflow-hidden rounded-[12px] border border-border bg-surface/90 font-mono text-[0.85rem] leading-6 shadow-[0_0_0_1px_rgb(0_0_0/0.02)] backdrop-blur-sm sm:text-[0.9rem]"
     >
       <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-border" />
         <span className="size-2.5 rounded-full bg-border" />
         <span className="size-2.5 rounded-full bg-border" />
-        <span className="ml-2 text-[0.72rem] text-muted">faraya@riyadh: ~</span>
+        <span className="ml-2 text-[0.8rem] text-muted">faraya@riyadh: ~</span>
       </div>
       <div className="min-h-[15.5rem] px-4 py-4">
         <p className="break-words text-fg">

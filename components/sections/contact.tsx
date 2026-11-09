@@ -39,7 +39,7 @@ export function Contact() {
                 <a
                   href={l.href}
                   {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="flex items-center gap-3 rounded-lg border border-border bg-bg px-4 py-3 text-sm text-fg transition-colors hover:border-accent"
+                  className="flex items-center gap-3 rounded-lg border border-border bg-bg px-4 py-3 text-[0.95rem] text-fg transition-colors hover:border-accent"
                 >
                   <l.icon className="size-4 shrink-0 text-accent-strong" aria-hidden />
                   <span className="truncate">{l.label}</span>
@@ -47,7 +47,7 @@ export function Contact() {
               </li>
             ))}
           </ul>
-          <p className="mt-6 font-mono text-xs text-muted">
+          <p className="mt-6 font-mono text-[0.8125rem] text-muted">
             {site.workAuthorization}
           </p>
         </div>

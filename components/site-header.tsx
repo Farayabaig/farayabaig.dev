@@ -47,7 +47,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg"
+              className="rounded-md px-3 py-2 text-[0.95rem] text-muted transition-colors hover:text-fg"
             >
               {item.label}
             </Link>

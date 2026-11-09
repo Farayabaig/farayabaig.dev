@@ -58,12 +58,12 @@ export default function CVPage() {
                   <h3 className="text-lg font-semibold">
                     {r.title}, {r.company}
                   </h3>
-                  <p className="font-mono text-xs text-muted">
+                  <p className="font-mono text-[0.8125rem] text-muted">
                     {r.start} to {r.end}
                   </p>
                 </div>
                 {r.client ? <p className="text-sm text-muted">Client: {r.client}</p> : null}
-                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[0.95rem] text-fg/90 marker:text-accent">
+                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-base md:text-[1.0625rem] text-fg/90 marker:text-accent">
                   {r.highlights.map((h) => (
                     <li key={h}>{h}</li>
                   ))}
@@ -73,7 +73,7 @@ export default function CVPage() {
           </ol>
 
           <h2 className="mt-14 text-2xl">Other projects</h2>
-          <ul className="mt-4 list-disc space-y-1.5 pl-5 text-[0.95rem] text-fg/90 marker:text-accent">
+          <ul className="mt-4 list-disc space-y-1.5 pl-5 text-base md:text-[1.0625rem] text-fg/90 marker:text-accent">
             <li>Natural language to DB query assistant: CrewAI agents translating questions into SQL on PostgreSQL, returning structured JSON.</li>
             <li>Customer feedback portal with sentiment analysis: web app with a Twitter-roBERTa-base sentiment chatbot.</li>
           </ul>
@@ -86,7 +86,7 @@ export default function CVPage() {
             </h2>
             <p className="mt-3 font-medium">{education.degree}</p>
             <p className="text-sm text-muted">{education.school}</p>
-            <p className="mt-1 font-mono text-xs text-muted">
+            <p className="mt-1 font-mono text-[0.8125rem] text-muted">
               {education.start} to {education.end}
             </p>
           </section>
@@ -114,7 +114,7 @@ export default function CVPage() {
             <dl className="mt-3 space-y-4">
               {skills.map((g) => (
                 <div key={g.category}>
-                  <dt className="font-mono text-xs uppercase tracking-wider text-muted">{g.category}</dt>
+                  <dt className="font-mono text-[0.8125rem] uppercase tracking-wider text-muted">{g.category}</dt>
                   <dd className="mt-1 text-sm text-fg/90">{g.skills.map((s) => s.name).join(", ")}</dd>
                 </div>
               ))}

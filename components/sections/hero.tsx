@@ -30,7 +30,7 @@ export function Hero() {
               </a>
             </Button>
           </div>
-          <p className="mt-6 flex items-center gap-2 text-sm text-muted">
+          <p className="mt-6 flex items-center gap-2 text-[0.95rem] text-muted">
             <MapPin className="size-4 text-accent-strong" aria-hidden />
             Riyadh, KSA <span aria-hidden="true">·</span> Open to relocation anywhere
           </p>

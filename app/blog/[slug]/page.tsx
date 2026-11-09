@@ -48,7 +48,7 @@ export default async function PostPage({ params }: Props) {
         <ArrowLeft className="size-4" aria-hidden /> All writing
       </Link>
       <header className="mt-6 max-w-3xl">
-        <p className="font-mono text-xs text-muted">
+        <p className="font-mono text-[0.8125rem] text-muted">
           <time dateTime={meta.date}>{formatDate(meta.date)}</time> · {meta.readingMinutes} min read · {site.name}
         </p>
         <h1 className="mt-3 text-3xl md:text-5xl">{meta.title}</h1>

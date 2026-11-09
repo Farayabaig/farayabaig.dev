@@ -21,7 +21,7 @@ export default function BlogIndex() {
         {posts.map((p) => (
           <li key={p.slug}>
             <Link href={`/blog/${p.slug}`} className="group block py-6">
-              <p className="font-mono text-xs text-muted">
+              <p className="font-mono text-[0.8125rem] text-muted">
                 <time dateTime={p.date}>{formatDate(p.date)}</time> · {p.readingMinutes} min read
               </p>
               <h2 className="mt-2 text-xl font-semibold group-hover:text-accent-strong md:text-2xl">{p.title}</h2>

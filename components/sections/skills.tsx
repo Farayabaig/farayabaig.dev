@@ -14,7 +14,7 @@ export function Skills() {
         <dl className="divide-y divide-border">
           {skills.map((g) => (
             <div key={g.category} className="grid gap-2 bg-surface p-4 sm:grid-cols-[12rem_1fr] sm:gap-6 sm:p-5">
-              <dt className="font-mono text-xs uppercase tracking-wider text-muted sm:pt-1.5">{g.category}</dt>
+              <dt className="font-mono text-[0.8125rem] uppercase tracking-wider text-muted sm:pt-1.5">{g.category}</dt>
               <dd>
                 <ul className="flex flex-wrap gap-2">
                   {g.skills.map((s) => (
@@ -22,13 +22,13 @@ export function Skills() {
                       {s.project ? (
                         <Link
                           href={`/projects/${s.project}`}
-                          className="inline-flex items-center rounded-md border border-border bg-bg px-2.5 py-1 text-sm text-fg transition-colors hover:border-accent hover:text-accent-strong"
+                          className="inline-flex items-center rounded-md border border-border bg-bg px-2.5 py-1 text-[0.95rem] text-fg transition-colors hover:border-accent hover:text-accent-strong"
                         >
                           {s.name}
                           <span aria-hidden="true" className="ml-1 text-accent-strong">↗</span>
                         </Link>
                       ) : (
-                        <span className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-sm text-muted">
+                        <span className="inline-flex items-center rounded-md border border-border px-2.5 py-1 text-[0.95rem] text-muted">
                           {s.name}
                         </span>
                       )}

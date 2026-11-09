@@ -110,7 +110,7 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
             ))}
           </div>
         ) : null}
-        {busy ? <p className="font-mono text-xs text-muted">retrieving…</p> : null}
+        {busy ? <p className="font-mono text-[0.8125rem] text-muted">retrieving…</p> : null}
       </div>
 
       <form

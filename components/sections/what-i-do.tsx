@@ -17,9 +17,9 @@ export function WhatIDo() {
                 <Icon className="size-5" aria-hidden />
               </span>
               <h3 className="mt-4 text-lg font-semibold">{p.title}</h3>
-              <p className="mt-2 text-[0.95rem] text-muted">{p.body}</p>
-              <p className="mt-4 font-mono text-xs leading-relaxed text-muted">{p.tools.join(" · ")}</p>
-              <Link href={p.proof} className="mt-auto pt-5 text-sm font-medium text-accent-strong hover:underline">
+              <p className="mt-2 text-base md:text-[1.0625rem] text-muted">{p.body}</p>
+              <p className="mt-4 font-mono text-[0.8125rem] leading-relaxed text-muted">{p.tools.join(" · ")}</p>
+              <Link href={p.proof} className="mt-auto pt-5 text-[0.95rem] font-medium text-accent-strong hover:underline">
                 See it in practice →
               </Link>
             </article>

@@ -51,11 +51,11 @@ export default async function ProjectPage({ params }: Props) {
       <section aria-label="TL;DR" className="mt-10 rounded-[12px] border border-border bg-surface">
         <div className="grid gap-px bg-border md:grid-cols-2">
           <div className="bg-surface p-5">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted">Problem</p>
+            <p className="font-mono text-[0.8125rem] uppercase tracking-wider text-muted">Problem</p>
             <p className="mt-2 text-fg">{meta.problem}</p>
           </div>
           <div className="bg-surface p-5">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted">Solution</p>
+            <p className="font-mono text-[0.8125rem] uppercase tracking-wider text-muted">Solution</p>
             <p className="mt-2 text-fg">{meta.solution}</p>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default async function ProjectPage({ params }: Props) {
           href={`/projects/${next.slug}`}
           className="block rounded-[12px] border border-border bg-surface p-6 transition-colors hover:border-accent"
         >
-          <span className="font-mono text-xs text-muted">Next case study</span>
+          <span className="font-mono text-[0.8125rem] text-muted">Next case study</span>
           <span className="mt-1 block text-lg font-semibold">{next.title} →</span>
         </Link>
       </nav>
