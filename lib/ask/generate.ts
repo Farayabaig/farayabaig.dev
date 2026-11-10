@@ -8,7 +8,22 @@ import Anthropic from "@anthropic-ai/sdk";
  */
 export const ASK_MODEL = process.env.ASK_MODEL ?? "claude-haiku-5-5";
 
-export const hasModel = () => Boolean(process.env.ANTHROPIC_API_KEY);
+/**
+ * Credentials: a LiteLLM proxy (LITELLM_BASE_URL + LITELLM_API_KEY, served through LiteLLM's
+ * Anthropic compatible /v1/messages endpoint) or Anthropic directly (ANTHROPIC_API_KEY).
+ * Server side only: never prefix these with NEXT_PUBLIC_.
+ */
+const apiKey = process.env.LITELLM_API_KEY ?? process.env.ANTHROPIC_API_KEY;
+const baseURL = process.env.LITELLM_BASE_URL?.replace(/\/+$/, "") || undefined;
+
+export const hasModel = () => Boolean(apiKey);
+
+/** effort is supported on Claude Haiku 5.5 and newer, but returns a 400 on Haiku 4.5 and older. */
+const effort = (process.env.ASK_EFFORT ?? (/haiku-4|3-5|claude-3/.test(ASK_MODEL) ? "" : "low")) as
+  | "low"
+  | "medium"
+  | "high"
+  | "";
 
 const SYSTEM = `You are the assistant on Faraya Baig's portfolio website. Visitors are mostly recruiters and hiring managers.
 
@@ -28,7 +43,7 @@ export type Turn = { role: "user" | "assistant"; text: string };
 let client: Anthropic | null = null;
 
 export function streamAnswer(question: string, passages: Passage[], history: Turn[]) {
-  client ??= new Anthropic({ maxRetries: 1, timeout: 30_000 });
+  client ??= new Anthropic({ apiKey, baseURL, maxRetries: 1, timeout: 30_000 });
   const context = passages
     .map((p, i) => `<passage id="${i + 1}" title="${p.title.replace(/"/g, "'")}">\n${p.text}\n</passage>`)
     .join("\n");
@@ -41,7 +56,7 @@ export function streamAnswer(question: string, passages: Passage[], history: Tur
   return client.messages.stream({
     model: ASK_MODEL,
     max_tokens: 1024,
-    output_config: { effort: "low" },
+    ...(effort ? { output_config: { effort } } : {}),
     system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
     messages,
   });

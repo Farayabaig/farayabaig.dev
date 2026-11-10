@@ -72,8 +72,10 @@ back to returning the passages.
 
 | Env var | Purpose |
 | --- | --- |
-| `ANTHROPIC_API_KEY` | Enables generated answers |
-| `ASK_MODEL` | Optional model override (default `claude-haiku-5-5`) |
+| `LITELLM_BASE_URL` + `LITELLM_API_KEY` | Use a LiteLLM proxy (its Anthropic compatible `/v1/messages` endpoint) |
+| `ANTHROPIC_API_KEY` | Or call Anthropic directly |
+| `ASK_MODEL` | Model name; with LiteLLM, the name your proxy exposes (default `claude-haiku-5-5`) |
+| `ASK_EFFORT` | Optional `low` / `medium` / `high`; left out automatically for Haiku 4.5 and older |
 | `ASK_DAILY_CAP` | Optional answers per day per server instance (default 500) |
 
 Check retrieval quality with `npx tsx scripts/ask-retrieval-check.ts`.
