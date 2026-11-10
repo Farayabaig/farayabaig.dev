@@ -22,7 +22,7 @@ app/
   page.tsx                  Home: hero → proof strip → projects → what I do → architecture → experience → skills → writing → education → contact
   projects/[slug]/          Case study pages (+ per page OG image)
   blog/ , blog/[slug]/      MDX blog (+ per post OG image)
-  cv/                       Web CV with KSA / EU / Canada toggle (?market=eu)
+  cv/                       Web CV; the PDF is generated from the same data (npm run cv:pdf)
   api/ask/route.ts          "Ask my portfolio" API (phase 1: guard + rate limit + retrieval)
   sitemap.ts robots.ts opengraph-image.tsx icon.svg
 components/

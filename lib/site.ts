@@ -216,10 +216,10 @@ export const experience: Role[] = [
     end: "Sep 2025",
     summary: "Orchestrate agents",
     highlights: [
-      "Architected Genie Mentor, a multi agent RAG onboarding platform that cut senior engineer support hours by 50%+.",
+      "Developed Genie Mentor, an open source multi agent RAG onboarding platform on AutoGen that cut senior engineer support hours by 50%+.",
       "Designed a planner, retriever, executor, evaluator and editor workflow over MCP tools for GitHub, Notion and Confluence, unifying 3 silos into one query path.",
-      "Fine tuned Qwen 2.5 3B and Mistral 7B for function calling and RAG tool use, giving the platform smaller, cheaper models that handle structured tool calls.",
-      "Built a DSPy evaluation and prompt optimization workflow, replacing manual trial and error with measurable, repeatable iteration.",
+      "Fine tuned Qwen 2.5 3B and Mistral 7B for function calling: LoRA SFT took the 3B model from 0% to 100% executable tool calls and 98.8% correct tool selection on held out data.",
+      "Built a DSPy evaluation and prompt optimization workflow, and a GRPO pipeline with custom rewards that reached 99% format compliance for cited RAG answers.",
     ],
     projects: ["genie-mentor", "fine-tuning-function-calling"],
   },
@@ -341,55 +341,40 @@ export const skills: SkillGroup[] = [
   },
 ];
 
-/* ───────────── /cv market toggle (brief §6) ───────────── */
+/* ───────────── CV (web page and PDF share this) ───────────── */
 
-export type Market = "ksa" | "eu" | "canada";
+export const cvSummary =
+  "AI Engineer with 4+ years building autonomous agents, conversational and speech AI, and fine tuned LLMs for production, and securing them through red teaming and threat modeling. I turn manual business processes into reliable agentic systems, from multi agent RAG platforms to an autonomous QA agent that cut multi hour test cycles to minutes.";
 
-export const markets: Record<
-  Market,
+export const openSource: { name: string; href: string; text: string }[] = [
   {
-    label: string;
-    locationLine: string;
-    lead: string;
-    emphasis: string[];
-    featured: string[];
-    cvFile: string;
-  }
-> = {
-  ksa: {
-    label: "KSA",
-    locationLine: "Based in Riyadh, available immediately",
-    lead: "AI Engineer delivering autonomous agents and AI security for enterprise automation.",
-    emphasis: [
-      "Autonomous QA agent that replaces multi hour supervised test cycles with minutes",
-      "Adversarial testing and threat modeling of LLMs, agent frameworks and MCP systems",
-      "Enterprise delivery for international clients, ready for Vision 2030 scale projects",
-    ],
-    featured: ["autonomous-qa-agent", "red-teaming-agentic-systems", "genie-mentor"],
-    cvFile: "/cv/Faraya_Baig_AI_Resume.pdf",
+    name: "function-calling-sft-qwen3b",
+    href: "https://github.com/Farayabaig/function-calling-sft-qwen3b",
+    text: "LoRA SFT of Qwen2.5 3B on xLAM: 0% to 100% executable tool calls and 98.8% correct tool selection on held out data.",
   },
-  eu: {
-    label: "EU",
-    locationLine: "Based in Riyadh, open to relocation anywhere",
-    lead: "AI Engineer with depth in LLM fine tuning, evaluation and responsible, secure AI systems.",
-    emphasis: [
-      "Fine tuned Qwen 2.5 3B and Mistral 7B for function calling, with a DSPy evaluation loop",
-      "Security by design: automated AI security scanning on every build",
-      "Privacy aware engineering with awareness of the EU AI Act and GDPR",
-    ],
-    featured: ["fine-tuning-function-calling", "red-teaming-agentic-systems", "genie-mentor"],
-    cvFile: "/cv/Faraya_Baig_AI_Resume.pdf",
+  {
+    name: "grpo-rag-citations-qwen3b",
+    href: "https://github.com/Farayabaig/grpo-rag-citations-qwen3b",
+    text: "GRPO with four custom rewards teaching a 3B model to cite its source, reaching 99% format compliance.",
   },
-  canada: {
-    label: "Canada",
-    locationLine: "Based in Riyadh, open to relocation anywhere",
-    lead: "AI Engineer focused on practical impact: systems that save teams real hours.",
-    emphasis: [
-      "Genie Mentor cut senior engineer support hours by 50%+",
-      "Voice to voice assistant resolving customer complaints 60% faster than human agents, on a speech pipeline under 5% WER",
-      "Clear communicator, comfortable working across time zones from Riyadh to Toronto",
-    ],
-    featured: ["genie-mentor", "call-intelligence", "autonomous-qa-agent"],
-    cvFile: "/cv/Faraya_Baig_AI_Resume.pdf",
+  {
+    name: "genie-mentor-agent",
+    href: "https://github.com/Genie-Experiments/genie-mentor-agent",
+    text: "Multi agent RAG platform on AutoGen and MCP: built the planner and refiner, retrieval, evaluation and observability.",
   },
-};
+  {
+    name: "rag-prompt-tuning-DSPy",
+    href: "https://github.com/Genie-Experiments/rag-prompt-tuning-DSPy",
+    text: "Standard, hand written and DSPy optimized RAG prompts benchmarked for similarity and hallucination.",
+  },
+  {
+    name: "a2a_attack",
+    href: "https://github.com/Farayabaig/a2a_attack",
+    text: "Security POC of prompt injection, context poisoning, privilege escalation and lateral movement in an agent to agent chain, with defenses.",
+  },
+  {
+    name: "VOICE_ASSISTANT",
+    href: "https://github.com/Farayabaig/VOICE_ASSISTANT",
+    text: "Voice to voice support assistant with Whisper, GPT-4o and gTTS, empathetic replies and escalation to a human agent.",
+  },
+];

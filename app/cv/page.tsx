@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Download } from "lucide-react";
-import { certifications, education, experience, site, skills } from "@/lib/site";
-import { getProjects } from "@/lib/content";
-import { MarketCV } from "@/components/market-cv";
+import { certifications, cvSummary, education, experience, openSource, site, skills } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -12,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default function CVPage() {
-  const titles = Object.fromEntries(getProjects().map((p) => [p.slug, p.title]));
   return (
     <div className="container-content py-12 md:py-16">
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -42,9 +39,8 @@ export default function CVPage() {
         </Button>
       </div>
 
-      <div className="mt-10">
-        <MarketCV titles={titles} />
-      </div>
+      <p className="mt-8 max-w-3xl text-[1.05rem] leading-relaxed text-fg/90">{cvSummary}</p>
+      <p className="mt-3 text-sm text-muted">Based in Riyadh, KSA. Open to relocation worldwide.</p>
 
       <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_18rem]">
         <section aria-labelledby="cv-exp">
@@ -72,10 +68,17 @@ export default function CVPage() {
             ))}
           </ol>
 
-          <h2 className="mt-14 text-2xl">Other projects</h2>
-          <ul className="mt-4 list-disc space-y-1.5 pl-5 text-base md:text-[1.0625rem] text-fg/90 marker:text-accent">
-            <li>Natural language to DB query assistant: CrewAI agents translating questions into SQL on PostgreSQL, returning structured JSON.</li>
-            <li>Customer feedback portal with sentiment analysis: web app with a Twitter-roBERTa-base sentiment chatbot.</li>
+          <h2 className="mt-14 text-2xl">Open source</h2>
+          <ul className="mt-4 space-y-3">
+            {openSource.map((o) => (
+              <li key={o.name} className="text-base md:text-[1.0625rem] text-fg/90">
+                <a href={o.href} target="_blank" rel="noopener noreferrer" className="font-mono text-[0.95rem] font-medium text-accent-strong hover:underline">
+                  {o.name}
+                </a>
+                <span className="text-muted"> · </span>
+                {o.text}
+              </li>
+            ))}
           </ul>
         </section>
 
