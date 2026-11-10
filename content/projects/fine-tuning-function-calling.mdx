@@ -2,18 +2,20 @@
 title: "Fine tuning small LLMs for function calling"
 company: "Emumba"
 context: "Enterprise · LLM platform"
-summary: "Fine tuned Qwen 2.5 3B and Mistral 7B for function calling and RAG tool use, with a DSPy evaluation loop to measure and improve them."
+summary: "Fine tuned Qwen 2.5 3B and Mistral 7B for function calling and RAG tool use: the 3B model picks the right tool 98.8% of the time on held out examples, measured with strict evaluation and a DSPy loop."
 problem: "Off the shelf models fell short on the structured tool calls the platform depended on."
 solution: "Domain specific fine tuning of two small models, measured with a repeatable DSPy evaluation and prompt optimization workflow."
 metrics:
-  - { value: "2", label: "models fine tuned (3B and 7B)" }
-  - { value: "Smaller", label: "and cheaper models in production" }
+  - { value: "98.8%", label: "correct tool selection on held out examples" }
+  - { value: "95.8%", label: "correct parameter names, hallucinations penalised" }
   - { value: "99%", label: "format compliance after GRPO training" }
 role: "AI Software Engineer"
 timeline: "Mar 2025 to Sep 2025"
 tags: ["Fine tuning", "GRPO", "Qwen 2.5", "Mistral 7B", "Unsloth", "TRL", "DSPy", "Haystack", "UpTrain", "Evaluation"]
 order: 5
 links:
+  - { label: "Function calling SFT on GitHub", href: "https://github.com/Farayabaig/function-calling-sft-qwen3b" }
+  - { label: "SFT checkpoints on Hugging Face", href: "https://huggingface.co/faraya1/Qwen2.5-3B-RAG-API-Finetuned-Models" }
   - { label: "GRPO for cited RAG answers on GitHub", href: "https://github.com/Farayabaig/grpo-rag-citations-qwen3b" }
   - { label: "GRPO checkpoints on Hugging Face", href: "https://huggingface.co/faraya1/genie-grpo-test-RAG-Qwen3B-faraya" }
   - { label: "RAG prompt tuning with DSPy on GitHub", href: "https://github.com/Genie-Experiments/rag-prompt-tuning-DSPy" }
@@ -34,6 +36,23 @@ A multi agent platform lives or dies on tool calls. A model that returns almost 
     { label: "Ship", detail: "smaller, cheaper models" }
   ]}
 />
+
+## Open source: function calling SFT on Qwen2.5 3B
+
+The core experiment is public in [function-calling-sft-qwen3b](https://github.com/Farayabaig/function-calling-sft-qwen3b). I fine tuned a 4 bit Qwen2.5 3B with LoRA on **10,000 examples** from Salesforce's public xLAM function calling dataset, on a single free Colab T4, then scored it on **200 held out examples** it never saw in training.
+
+<ThemedImage
+  light="/projects/sft/results-light.png"
+  dark="/projects/sft/results-dark.png"
+  alt="Bar chart: after fine tuning, Qwen2.5 3B produced valid JSON 100% of the time, chose the correct tool 98.8%, the correct parameter names 95.8% and the correct parameter values 85.5% on 200 held out examples."
+  width={1600}
+  height={720}
+  caption="Checkpoint at step 1000. Steps 700 to 1000 all land within about two points of these scores."
+/>
+
+The scoring is deliberately strict: inventing a tool costs 0.2 and inventing an argument costs 0.1, and output that is not valid JSON scores below zero. In an agent, calling a tool that does not exist is worse than calling none, so the metric punishes it.
+
+The remaining errors sit in **parameter values**, and most are near misses, like `"small"` where the API expects `"s"`.
 
 ## Open source: RAG prompt tuning with DSPy
 
@@ -86,7 +105,7 @@ Splitting format and correctness into separate rewards gives the model credit fo
 
 **What it showed:** the model learned the format and kept it, with **99% format compliance** across the logged run. Citing the right, well grounded document held steady at about **0.55 out of 1**, which points to the next step: a softer document reward and a proper before and after evaluation on held out data.
 
-<Callout>The function calling fine tuning code and data are private client work. The DSPy evaluation framework and the GRPO pipeline are open source.</Callout>
+<Callout>Fine tuning on the platform's own data stays private. The function calling SFT, the DSPy evaluation framework and the GRPO pipeline above are open source.</Callout>
 
 ## Key engineering decisions
 
@@ -104,9 +123,10 @@ A systematic DSPy evaluation and prompt optimization workflow made progress **me
 
 ## Results
 
+- A 3B model that returns valid tool calls 100% of the time and picks the right tool **98.8%** of the time on held out examples.
 - Smaller, cheaper models tuned to perform the function calling tasks the platform needed.
 - A repeatable, evidence based path to better fine tuning results for the team.
 
 ## What I would do next
 
-Publish an open benchmark of structured tool call failures for small models, and a results chart comparing tuned and base models on it.
+Score the base model with the same functions to show the exact before and after gain, extend the evaluation to the full test split and a second benchmark, and reduce parameter value errors with normalisation hints in tool descriptions.
