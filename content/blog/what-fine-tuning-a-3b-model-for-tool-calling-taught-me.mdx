@@ -1,0 +1,122 @@
+---
+title: "My model named the right tool 87% of the time. It was usable 0% of the time."
+description: "What fine tuning a 3B model for tool calling taught me about evaluation, near misses, and why an agent needs exact calls, not good intentions."
+date: "2026-11-10"
+tags: ["Fine tuning", "Function calling", "LLMs", "Evaluation"]
+---
+
+Here is the number that changed how I think about small models.
+
+I gave a base Qwen2.5 3B model 200 function calling tasks it had never seen. In **87%** of them, it named the tool the user needed. And in **0%** of them could an agent actually run what it produced.
+
+Not a low score. Zero.
+
+This post is about what happened when I fine tuned that model, and the lessons that stuck with me afterwards. All the code, the evaluation and every prediction are public in [function-calling-sft-qwen3b](https://github.com/Farayabaig/function-calling-sft-qwen3b).
+
+## Why I cared about a 3B model at all
+
+Agents run on tool calls. Every time an agent books a meeting, queries a database or checks a domain, a model has to turn a sentence into something exact like this:
+
+```json
+[{"name": "get_time_zones", "arguments": {"keyword": "europe"}}]
+```
+
+Big frontier models are great at this, but they are slow and expensive when an agent makes dozens of calls per task. I wanted to know how far a **small, 4 bit, 3B model** could get if I trained it for this one job, on hardware anyone has: a single free Colab T4.
+
+## The setup, briefly
+
+- **Model:** Qwen2.5 3B Instruct, loaded in 4 bit
+- **Method:** LoRA fine tuning with Unsloth, training about 1% of the weights
+- **Data:** 10,000 examples from Salesforce's public [xLAM function calling dataset](https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k)
+- **Test:** 200 examples the model never saw during training
+- **Cost:** one free GPU and some patience
+
+Training loss went from 0.77 to 0.42 over one epoch. Nice, but loss tells you very little about whether an agent can use the output. So I spent more time on evaluation than on training, which turned out to be the right call.
+
+## The base model wasn't dumb. It was speaking a different language.
+
+Here is what the base model said when asked for time zones in Europe:
+
+~~~text
+```json
+{"endpoint": "get_time_zones", "params": {"keyword": "Europe"}}
+```
+~~~
+
+Read it as a human and it's basically right. Right tool, right keyword. Read it as an agent and it's useless: the shape is invented (`endpoint` and `params` instead of `name` and `arguments`), it's a single object instead of a list, and it's wrapped in Markdown.
+
+That pattern was everywhere. **156 of 200 answers** invented their own format, and **167 of 200** came wrapped in code fences. The model understood the request. It just had no idea what a valid answer looked like.
+
+After fine tuning, on the same 200 examples, with the same prompt and the same scoring code:
+
+<ThemedImage
+  light="/projects/sft/compare-light.png"
+  dark="/projects/sft/compare-dark.png"
+  alt="Grouped bar chart comparing base and fine tuned Qwen2.5 3B on 200 held out examples. Usable tool calls: 0% vs 100%. Correct tool: 86.8% vs 98.8%. Correct parameter names: 86.4% vs 95.8%. Correct parameter values: 0% vs 85.5%."
+  width={1600}
+  height={840}
+/>
+
+**Usable tool calls went from 0% to 100%. Correct parameter values went from 0% to 85.5%.**
+
+That is the real value of fine tuning a small model. It doesn't make it smarter. It teaches it the exact contract your system expects, and it makes it keep that contract every single time.
+
+## Lesson 1: tiny evaluation sets lie, beautifully
+
+My first evaluation runs looked perfect. Every checkpoint from step 600 onwards scored the maximum.
+
+Then I noticed the evaluation was running on **two examples**.
+
+Two examples can't tell a good model from a lucky one. When I reran on 200, the picture was still strong, but it was real: 98.8% instead of 100%, with clear weak spots I could actually work on. I now treat any perfect score on a small test set as a bug report, not a result.
+
+## Lesson 2: make your metric angry about hallucinations
+
+In an agent, calling a tool that doesn't exist is worse than calling nothing. It can trigger errors, retries or, in the worst case, the wrong action. So my scoring punishes it on purpose:
+
+- a hallucinated tool costs **0.2**
+- a hallucinated argument costs **0.1**
+- output that isn't valid JSON scores **below zero**
+
+A lenient metric would have made my numbers look better. A strict one made the model better, because I could see exactly what it was doing wrong.
+
+## Lesson 3: check what your metric secretly rewards
+
+Look at the chart again. The base model scores **86.8%** on "correct tool". For a model that produced zero usable calls, that should feel wrong. It did to me too.
+
+The reason: when an answer isn't valid JSON, the scorer falls back to checking whether the tool's name appears anywhere in the text. That's a sensible way to give partial credit during training, but it means the metric was rewarding the base model for *talking about* the right tool rather than *calling* it.
+
+I kept the scorer unchanged so the comparison stays fair, and I report the number with a footnote. But it's a good reminder that every metric has an opinion, and you should know what it is before you trust it.
+
+## Lesson 4: the last errors are near misses, and that's good news
+
+After fine tuning, the weakest score was parameter values at 85.5%. When I read the failures, a typical one looked like this:
+
+```text
+Asked for:  a small thumbnail and a large one
+Model:      "size": "small"   and   "size": "large"
+Expected:   "size": "s"       and   "size": "l"
+```
+
+The model understood perfectly. It just didn't know this API wants single letters. That's not a reasoning problem, it's a documentation problem, and it's fixable: put allowed values in the tool description, or normalise values before the call. Knowing *why* a model fails tells you whether to train more or just fix the interface.
+
+## Lesson 5: reinforcement learning teaches format fast and truth slowly
+
+I also tried GRPO, a reinforcement learning method, to teach the same model to answer RAG questions in a strict "think, cite, answer" format. With four simple rule based rewards, it learned the format almost perfectly, with **99% compliance** across the logged run.
+
+Citing the *right* document was another story. That reward stayed flat at around 0.55 out of 1 for hundreds of steps. The model learned exactly what I could measure precisely (tags, order, no extra text) and struggled with what I measured loosely (is the answer really grounded in that document?).
+
+Rewards are instructions. A model can only get as precise as the reward you write. The full write up is in [grpo-rag-citations-qwen3b](https://github.com/Farayabaig/grpo-rag-citations-qwen3b).
+
+## What I'd tell anyone starting out
+
+1. **Evaluate before you train.** Run the base model first. My 0% baseline turned "the model got better" into a story with numbers.
+2. **Use a real test set.** Hundreds of held out examples, not a handful.
+3. **Score what your system needs**, which for agents means exact, executable calls.
+4. **Read the failures.** The numbers tell you how much is wrong. The examples tell you why.
+5. **Start small.** A 3B model on a free GPU taught me more than a big model would have, because I could see every mistake.
+
+Small models won't replace frontier models for hard reasoning. But for a well defined job like turning a sentence into a tool call, a few hours of focused fine tuning turned a model that *understood* into one an agent can *trust*.
+
+---
+
+*I build autonomous agents, fine tune the small models behind them, and red team them. If you're working on something similar, I'd love to [hear about it](/#contact).*

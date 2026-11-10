@@ -6,14 +6,13 @@ import { Badge } from "@/components/ui/badge";
 
 const upcoming = [
   "Securing AI agents in enterprise deployments",
-  "What fine tuning a 3B model for tool calling taught me",
 ];
 
 export function Writing() {
   const posts = getPosts().slice(0, 3);
   return (
     <Section id="writing" eyebrow="Writing" title="Notes on agentic AI, speech AI and red teaming agents">
-      <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
+      <div className="grid gap-4 md:grid-cols-2">
         {posts.map((p) => (
           <article key={p.slug} className="group relative rounded-[12px] border border-border bg-surface p-6 transition-colors hover:border-accent">
             <p className="font-mono text-[0.8125rem] text-muted">
@@ -34,7 +33,7 @@ export function Writing() {
             </ul>
           </article>
         ))}
-        <div className="rounded-[12px] border border-dashed border-border p-6">
+        <div className="rounded-[12px] border border-dashed border-border p-6 md:col-span-2">
           <p className="font-mono text-[0.8125rem] text-muted">In the works</p>
           <ul className="mt-3 space-y-3">
             {upcoming.map((u) => (
