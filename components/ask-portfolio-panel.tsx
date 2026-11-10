@@ -9,6 +9,43 @@ type Msg = { role: "user" | "assistant"; text: string; sources?: Source[]; error
 
 const suggestions = ["What agents has Faraya built?", "Speech to text accuracy?", "AI security experience?"];
 
+/** Renders the small Markdown subset the assistant uses (bold and "- " bullets) without HTML injection. */
+function Rich({ text }: { text: string }) {
+  const inline = (line: string) =>
+    line.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+      part.startsWith("**") && part.endsWith("**") && part.length > 4 ? (
+        <strong key={i} className="font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      ) : (
+        part
+      ),
+    );
+  const blocks: React.ReactNode[] = [];
+  let bullets: string[] = [];
+  const flush = () => {
+    if (bullets.length)
+      blocks.push(
+        <ul key={blocks.length} className="my-1 list-disc space-y-1 pl-4 marker:text-accent">
+          {bullets.map((b, i) => (
+            <li key={i}>{inline(b)}</li>
+          ))}
+        </ul>,
+      );
+    bullets = [];
+  };
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    if (/^[-*•]\s+/.test(line)) bullets.push(line.replace(/^[-*•]\s+/, ""));
+    else {
+      flush();
+      if (line) blocks.push(<p key={blocks.length} className="my-1 first:mt-0">{inline(line)}</p>);
+    }
+  }
+  flush();
+  return <>{blocks}</>;
+}
+
 export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
   const [msgs, setMsgs] = useState<Msg[]>([
     {
@@ -113,7 +150,13 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
         {msgs.map((m, i) => (
           <div key={i} className={m.role === "user" ? "ml-8 rounded-lg bg-bg px-3 py-2 text-fg" : "mr-4 text-fg"}>
             {m.text ? (
-              <p className={m.error ? "whitespace-pre-line text-amber" : "whitespace-pre-line"}>{m.text}</p>
+              m.error ? (
+                <p className="text-amber">{m.text}</p>
+              ) : m.role === "assistant" ? (
+                <Rich text={m.text} />
+              ) : (
+                <p>{m.text}</p>
+              )
             ) : m.role === "assistant" ? (
               <p className="font-mono text-xs text-muted">thinking…</p>
             ) : null}
