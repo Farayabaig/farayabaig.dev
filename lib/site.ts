@@ -94,7 +94,7 @@ export const pillars = [
   {
     id: "speech",
     title: "Conversational and Speech AI",
-    body: "Speech to text, intent, sentiment, emotion and summarization models, and support assistants that hold up in production.",
+    body: "Speech to text, intent, sentiment, emotion and summarization models, and voice to voice support assistants that resolve complaints or escalate them to a person.",
     tools: ["Whisper", "Canary-1B", "Phi-3", "LangChain"],
     proof: "/projects/call-intelligence",
   },
@@ -142,7 +142,7 @@ export const chapters: Chapter[] = [
     theme: "Conversational AI",
     question: "Can a machine understand a phone call?",
     built:
-      "Built speech to text on Canary-1B and Whisper, feeding intent, sentiment, emotion and summarization models that replaced manual call review.",
+      "Built speech to text on Canary-1B and Whisper feeding NLP models, and a voice to voice assistant that resolves complaints 60% faster than human agents.",
     metric: { value: "< 5% WER", label: "with 95%+ accurate NLP models" },
     project: "call-intelligence",
   },
@@ -235,6 +235,7 @@ export const experience: Role[] = [
       "Built STT pipelines on Canary-1B and Whisper under 5% WER, with domain specific validation for NER and numerical accuracy.",
       "Deployed intent, sentiment, emotion, summarization and offer detection models at 95%+ accuracy, automating manual call review.",
       "Cut data labeling turnaround by ~50% with Mistral and LLaMA-3.",
+      "Built a voice to voice support assistant that resolves customer complaints 60% faster than human agents, escalating to a person when needed.",
       "Built a LangChain + Phi-3 support assistant demoed to Salesforce, and a 96% accurate telecom churn model.",
     ],
     projects: ["call-intelligence"],
@@ -389,7 +390,7 @@ export const markets: Record<
     lead: "AI Engineer focused on practical impact: systems that save teams real hours.",
     emphasis: [
       "Genie Mentor cut senior engineer support hours by 50%+",
-      "Call intelligence pipeline: under 5% WER and 95%+ accurate NLP models in production",
+      "Voice to voice assistant resolving customer complaints 60% faster than human agents, on a speech pipeline under 5% WER",
       "Clear communicator, comfortable working across time zones from Riyadh to Toronto",
     ],
     featured: ["genie-mentor", "call-intelligence", "autonomous-qa-agent"],

@@ -1,17 +1,18 @@
 ---
-title: "Call intelligence: from raw audio to business insight"
+title: "Call intelligence and a voice to voice support assistant"
 company: "Afiniti"
 context: "Enterprise · Contact center AI"
-summary: "Speech to text on Canary-1B and Whisper under 5% WER, feeding intent, sentiment, emotion, summarization and offer detection models at 95%+ accuracy."
-problem: "Call review and reporting were manual, so analytics could only grow by adding headcount."
-solution: "A transcription layer with domain specific validation, feeding a suite of production NLP models."
+summary: "Speech to text on Canary-1B and Whisper under 5% WER, feeding NLP models at 95%+ accuracy, and a voice to voice assistant that resolves customer complaints 60% faster than human agents."
+problem: "Complaints waited in queues for human agents, and call review was manual, so support could only grow by adding headcount."
+solution: "A validated transcription layer feeding production NLP models, plus a voice to voice assistant that resolves complaints or escalates them to a person."
 metrics:
   - { value: "< 5%", label: "word error rate" }
   - { value: "95%+", label: "NLP model accuracy" }
+  - { value: "60%", label: "faster complaint resolution than human agents" }
   - { value: "~50%", label: "faster data labeling" }
 role: "AI Software Engineer"
 timeline: "Jul 2023 to Mar 2025"
-tags: ["Speech AI", "NLP", "Whisper", "Canary-1B", "LLMs", "LangChain", "Phi-3"]
+tags: ["Speech AI", "Voice AI", "NLP", "Whisper", "Canary-1B", "LLMs", "LangChain", "Phi-3"]
 featured: true
 order: 3
 nda: true
@@ -20,6 +21,8 @@ nda: true
 ## The problem
 
 Customer calls held the answers the business wanted: why people called, how they felt and whether an offer landed. Getting those answers meant people listening to calls and filling in reports. That does not scale, and every downstream analytics idea depended on transcripts nobody fully trusted.
+
+Complaints had the same problem in real time. Every one waited for a human agent, even the common issues that follow a familiar pattern, so customers waited longer and support capacity was tied directly to headcount.
 
 ## Architecture
 
@@ -35,10 +38,27 @@ Customer calls held the answers the business wanted: why people called, how they
   ]}
 />
 
+The same speech and intent stack powers a **voice to voice assistant** that talks to customers directly:
+
+<Flow
+  caption="Speech in, speech out, with a person always one step away."
+  steps={[
+    { label: "Customer speaks" },
+    { label: "STT", detail: "live transcription" },
+    { label: "Intent", detail: "what the complaint is about" },
+    { label: "Resolve", detail: "or escalate to an agent" },
+    { label: "TTS", detail: "spoken reply" }
+  ]}
+/>
+
 ## Key engineering decisions
 
 <Decision title="Validate what matters, not just average WER">
 A low overall word error rate can still hide wrong names and wrong numbers, and those are exactly what analytics depends on. Domain specific validation for **NER and numerical accuracy** made transcripts trustworthy for other teams to build on.
+</Decision>
+
+<Decision title="Escalate instead of guessing">
+A support assistant that confidently gives a wrong answer costs more than a slow one. The assistant **resolves the complaints it understands and hands the rest to a human agent**, so speed never comes at the expense of the customer.
 </Decision>
 
 <Decision title="LLMs for labeling, people for review">
@@ -51,6 +71,7 @@ For the customer support assistant demoed to Salesforce, LangChain with **Phi-3*
 
 ## Results
 
+- Customer complaints resolved **60% faster than human agents** by the voice to voice assistant, with escalation to a person when needed.
 - Transcription under **5% word error rate**, a reliable layer feeding all downstream analytics.
 - Intent, sentiment, emotion, summarization and outcome or offer detection at **95%+ accuracy**, automating manual call review.
 - Data labeling turnaround cut by **~50%**.
@@ -59,4 +80,4 @@ For the customer support assistant demoed to Salesforce, LangChain with **Phi-3*
 
 ## What I would do next
 
-Add streaming transcription for real time agent assist, and per segment monitoring so accuracy drops on new accents or products are caught before they reach reports.
+Add streaming transcription for real time agent assist, track satisfaction for assistant handled versus agent handled complaints, and per segment monitoring so accuracy drops on new accents or products are caught before they reach reports.

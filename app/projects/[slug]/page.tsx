@@ -59,9 +59,11 @@ export default async function ProjectPage({ params }: Props) {
             <p className="mt-2 text-fg">{meta.solution}</p>
           </div>
         </div>
-        <dl className="grid grid-cols-2 gap-px border-t border-border bg-border sm:grid-cols-3">
+        <dl
+          className={`grid grid-cols-2 gap-px border-t border-border bg-border ${meta.metrics.length > 3 ? "lg:grid-cols-4" : "sm:grid-cols-3"}`}
+        >
           {meta.metrics.map((m) => (
-            <div key={m.label} className="flex flex-col-reverse bg-surface p-5">
+            <div key={m.label} className="flex flex-col-reverse justify-end bg-surface p-5">
               <dt className="mt-1 text-sm text-muted">{m.label}</dt>
               <dd className="font-mono text-2xl font-semibold text-amber">{m.value}</dd>
             </div>
