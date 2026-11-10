@@ -21,7 +21,6 @@ export const site = {
   email: "farayabaig05@gmail.com",
   linkedin: "https://www.linkedin.com/in/farayabaig05/",
   github: "https://github.com/Farayabaig",
-  huggingface: "https://huggingface.co/faraya1",
   /** Set NEXT_PUBLIC_CALENDLY_URL to your real booking link. Falls back to email. */
   booking:
     process.env.NEXT_PUBLIC_CALENDLY_URL ??

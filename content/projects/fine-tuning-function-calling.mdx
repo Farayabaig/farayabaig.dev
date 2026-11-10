@@ -14,6 +14,7 @@ timeline: "Mar 2025 to Sep 2025"
 tags: ["Fine tuning", "GRPO", "Qwen 2.5", "Mistral 7B", "Unsloth", "TRL", "DSPy", "Haystack", "UpTrain", "Evaluation"]
 order: 5
 links:
+  - { label: "GRPO for cited RAG answers on GitHub", href: "https://github.com/Farayabaig/grpo-rag-citations-qwen3b" }
   - { label: "GRPO checkpoints on Hugging Face", href: "https://huggingface.co/faraya1/genie-grpo-test-RAG-Qwen3B-faraya" }
   - { label: "RAG prompt tuning with DSPy on GitHub", href: "https://github.com/Genie-Experiments/rag-prompt-tuning-DSPy" }
 ---
@@ -57,7 +58,7 @@ The evaluation side of this work is public. I wrote [rag-prompt-tuning-DSPy](htt
 
 ## Open source: GRPO for cited RAG answers
 
-Supervised fine tuning teaches a model what good answers look like. I also wanted to see how far **reinforcement learning** could push a small model, so I trained [Qwen2.5 3B with GRPO](https://huggingface.co/faraya1/genie-grpo-test-RAG-Qwen3B-faraya) to answer RAG questions in a strict format and cite its source:
+Supervised fine tuning teaches a model what good answers look like. I also wanted to see how far **reinforcement learning** could push a small model, so I trained [Qwen2.5 3B with GRPO](https://github.com/Farayabaig/grpo-rag-citations-qwen3b) to answer RAG questions in a strict format and cite its source:
 
 ```text
 <think> which document answers the question, and why </think>

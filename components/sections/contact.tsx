@@ -1,4 +1,4 @@
-import { Boxes, CalendarClock, Mail } from "lucide-react";
+import { CalendarClock, Mail } from "lucide-react";
 import { site } from "@/lib/site";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ export function Contact() {
     { href: `mailto:${site.email}`, label: site.email, icon: Mail },
     { href: site.linkedin, label: "linkedin.com/in/farayabaig05", icon: LinkedInIcon },
     { href: site.github, label: "github.com/Farayabaig", icon: GitHubIcon },
-    { href: site.huggingface, label: "Hugging Face models", icon: Boxes },
   ];
   return (
     <section id="contact" aria-labelledby="contact-title" className="py-16 md:py-24">
@@ -34,7 +33,7 @@ export function Contact() {
               </a>
             </Button>
           </div>
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-10 grid gap-3 sm:grid-cols-3">
             {links.map((l) => (
               <li key={l.href}>
                 <a
