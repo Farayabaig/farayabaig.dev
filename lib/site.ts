@@ -21,10 +21,8 @@ export const site = {
   email: "farayabaig05@gmail.com",
   linkedin: "https://www.linkedin.com/in/farayabaig05/",
   github: "https://github.com/Farayabaig",
-  /** Set NEXT_PUBLIC_CALENDLY_URL to your real booking link. Falls back to email. */
-  booking:
-    process.env.NEXT_PUBLIC_CALENDLY_URL ??
-    "mailto:farayabaig05@gmail.com?subject=20%20minute%20call&body=Hi%20Faraya%2C%20I%27d%20like%20to%20book%20a%2020%20minute%20call.",
+  /** Google Calendar appointment schedule (20 minute call, adds a Google Meet link). Override with NEXT_PUBLIC_BOOKING_URL. */
+  booking: process.env.NEXT_PUBLIC_BOOKING_URL ?? "https://calendar.app.google/AEE7N6zXuDVx6pbk8",
   location: "Riyadh, KSA",
   locationLine: "Riyadh, KSA · Open to relocation anywhere",
   cvPath: "/cv/Faraya_Baig_AI_Resume.pdf",

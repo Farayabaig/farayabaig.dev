@@ -61,7 +61,7 @@ Fonts: Space Grotesk (headings), Inter (body), JetBrains Mono (code, tags, metri
 | Env var | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL. Optional: defaults to the Vercel production URL, so only set it once you own a custom domain |
-| `NEXT_PUBLIC_CALENDLY_URL` | Booking link; falls back to a prefilled email |
+| `NEXT_PUBLIC_BOOKING_URL` | Optional override for the "Book a 20 minute call" link (defaults to the Google Calendar appointment page) |
 
 ## Phase 2: Ask my portfolio
 
