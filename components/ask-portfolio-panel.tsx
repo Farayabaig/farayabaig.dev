@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Send, X } from "lucide-react";
 
 type Source = { title: string; href: string; excerpt: string };
-type Msg = { role: "user" | "assistant"; text: string; sources?: Source[]; error?: boolean };
+type Msg = { role: "user" | "assistant"; text: string; sources?: Source[]; error?: boolean; compact?: boolean };
 
 const suggestions = ["What agents has Faraya built?", "Speech to text accuracy?", "AI security experience?"];
 
@@ -13,7 +13,7 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
   const [msgs, setMsgs] = useState<Msg[]>([
     {
       role: "assistant",
-      text: "Hi! I answer questions about Faraya's work using only this site's CV and case studies. This is an early preview: I return the most relevant passages for now.",
+      text: "Hi! Ask me anything about Faraya's work: agents, speech AI, fine tuning, AI security or availability. I answer only from this site's CV and case studies.",
     },
   ]);
   const [q, setQ] = useState("");
@@ -34,22 +34,53 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
 
   async function ask(question: string) {
     if (!question.trim() || busy) return;
+    // Last two exchanges (skipping the greeting) so follow up questions have context.
+    const history = msgs
+      .slice(1)
+      .filter((m) => !m.error && m.text)
+      .slice(-4)
+      .map((m) => ({ role: m.role, text: m.text }));
     setMsgs((m) => [...m, { role: "user", text: question }]);
     setQ("");
     setBusy(true);
+    const update = (fn: (last: Msg) => Msg) =>
+      setMsgs((m) => [...m.slice(0, -1), fn(m[m.length - 1])]);
     try {
       const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question, history }),
       });
-      const data = await res.json();
-      setMsgs((m) => [
-        ...m,
-        res.ok
-          ? { role: "assistant", text: data.answer, sources: data.sources }
-          : { role: "assistant", text: data.error ?? "Something went wrong.", error: true },
-      ]);
+      const type = res.headers.get("content-type") ?? "";
+      if (!res.ok || !type.includes("ndjson") || !res.body) {
+        // Errors, and the retrieval only fallback, come back as plain JSON.
+        const data = await res.json();
+        setMsgs((m) => [
+          ...m,
+          res.ok
+            ? { role: "assistant", text: data.answer, sources: data.sources }
+            : { role: "assistant", text: data.error ?? "Something went wrong.", error: true },
+        ]);
+        return;
+      }
+      setMsgs((m) => [...m, { role: "assistant", text: "" }]);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split("\n");
+        buf = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const ev = JSON.parse(line) as { type: string; text?: string; message?: string; sources?: Source[] };
+          if (ev.type === "sources") update((last) => ({ ...last, sources: ev.sources, compact: true }));
+          else if (ev.type === "text") update((last) => ({ ...last, text: last.text + (ev.text ?? "") }));
+          else if (ev.type === "error") update((last) => ({ ...last, text: ev.message ?? "Something went wrong.", error: true }));
+        }
+      }
     } catch {
       setMsgs((m) => [...m, { role: "assistant", text: "Network error. Please try again.", error: true }]);
     } finally {
@@ -67,7 +98,7 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <div>
           <h2 id="ask-title" className="font-mono text-sm font-medium">
-            Ask my portfolio <span className="ml-1 rounded border border-border px-1.5 py-0.5 text-[0.65rem] text-muted">preview</span>
+            Ask my portfolio
           </h2>
           <Link href="/projects/ask-my-portfolio" className="text-xs text-accent-strong hover:underline">
             How this works
@@ -81,9 +112,25 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
       <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4 text-sm" aria-live="polite">
         {msgs.map((m, i) => (
           <div key={i} className={m.role === "user" ? "ml-8 rounded-lg bg-bg px-3 py-2 text-fg" : "mr-4 text-fg"}>
-            <p className={m.error ? "text-amber" : undefined}>{m.text}</p>
-            {m.sources?.length ? (
-              <ul className="mt-2 space-y-2">
+            {m.text ? (
+              <p className={m.error ? "whitespace-pre-line text-amber" : "whitespace-pre-line"}>{m.text}</p>
+            ) : m.role === "assistant" ? (
+              <p className="font-mono text-xs text-muted">thinking…</p>
+            ) : null}
+            {m.sources?.length && m.compact && m.text ? (
+              <p className="mt-2 text-xs text-muted">
+                Sources:{" "}
+                {m.sources.map((s, j) => (
+                  <span key={j}>
+                    <Link href={s.href} className="text-accent-strong hover:underline">
+                      {s.title}
+                    </Link>
+                    {j < m.sources!.length - 1 ? " · " : ""}
+                  </span>
+                ))}
+              </p>
+            ) : m.sources?.length && !m.compact ? (
+              <ul className="mt-2 space-y-2" aria-label="Sources">
                 {m.sources.map((s, j) => (
                   <li key={j} className="rounded-lg border border-border p-2.5">
                     <Link href={s.href} className="text-xs font-medium text-accent-strong hover:underline">
@@ -110,7 +157,7 @@ export function AskPortfolioPanel({ onClose }: { onClose: () => void }) {
             ))}
           </div>
         ) : null}
-        {busy ? <p className="font-mono text-[0.8125rem] text-muted">retrieving…</p> : null}
+        {busy && msgs[msgs.length - 1]?.role === "user" ? <p className="font-mono text-[0.8125rem] text-muted">retrieving…</p> : null}
       </div>
 
       <form

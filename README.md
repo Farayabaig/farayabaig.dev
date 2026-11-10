@@ -63,8 +63,17 @@ Fonts: Space Grotesk (headings), Inter (body), JetBrains Mono (code, tags, metri
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL. Optional: defaults to the Vercel production URL, so only set it once you own a custom domain |
 | `NEXT_PUBLIC_BOOKING_URL` | Optional override for the "Book a 20 minute call" link (defaults to the Google Calendar appointment page) |
 
-## Phase 2: Ask my portfolio
+## Ask my portfolio
 
-`app/api/ask/route.ts` already validates input, rate limits per IP, blocks obvious injection attempts and returns
-grounded passages. To finish: swap the lexical retriever for embeddings (pgvector), call a small model with the
-system prompt in the route's comment, stream the answer, and move the rate limiter to Redis/Upstash.
+`app/api/ask/route.ts` guards the input (length, per IP rate limit, daily cap, injection patterns), retrieves
+passages with a small BM25 index over the site's content (`lib/ask/retrieve.ts`), and streams an answer from
+Claude Haiku 5.5 grounded only in those passages (`lib/ask/generate.ts`). Without `ANTHROPIC_API_KEY` it falls
+back to returning the passages.
+
+| Env var | Purpose |
+| --- | --- |
+| `ANTHROPIC_API_KEY` | Enables generated answers |
+| `ASK_MODEL` | Optional model override (default `claude-haiku-5-5`) |
+| `ASK_DAILY_CAP` | Optional answers per day per server instance (default 500) |
+
+Check retrieval quality with `npx tsx scripts/ask-retrieval-check.ts`.

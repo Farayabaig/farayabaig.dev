@@ -1,7 +1,7 @@
 ---
 title: "Ask my portfolio: a RAG assistant for this site"
-company: "Personal project, phase 2"
-context: "Personal project, phase 2"
+company: "Personal project"
+context: "Personal project · Live on this site"
 summary: "A small, rate limited RAG assistant grounded on my CV and case studies, with a visible prompt injection defense."
 problem: "Recruiters have questions a static page cannot answer in seconds."
 solution: "A grounded assistant that answers only from this site's content and shows its sources."
@@ -9,7 +9,7 @@ metrics:
   - { value: "Grounded", label: "answers cite their sources" }
   - { value: "Rate limited", label: "cheap to run" }
 role: "Solo builder"
-timeline: "In progress"
+timeline: "Live"
 tags: ["RAG", "LLMs", "AI security", "Next.js", "Evaluation"]
 order: 8
 links:
@@ -27,7 +27,7 @@ The strongest proof of AI engineering on a portfolio is a working AI system on t
     { label: "Question" },
     { label: "Input guard", detail: "length, rate limit, injection checks" },
     { label: "Retriever", detail: "CV and case studies" },
-    { label: "Small model", detail: "answers from context only" },
+    { label: "Claude Haiku 5.5", detail: "answers from context only, streamed" },
     { label: "Answer", detail: "with sources" }
   ]}
 />
@@ -46,6 +46,13 @@ Retrieved passages are wrapped and labelled as untrusted data, and the model is 
 A small model, short answers and per IP rate limits keep the cost predictable.
 </Decision>
 
+## How it works
+
+1. **Guard the input.** Questions are length limited, rate limited per visitor, capped per day, and screened for obvious injection attempts ("ignore previous instructions", fake system tags) before anything reaches the model.
+2. **Retrieve.** A small BM25 index over this site's own content (CV, case studies, blog posts, open source projects) finds the most relevant passages, with light stemming and at most two passages per page so answers draw on several sources.
+3. **Generate.** Claude Haiku 5.5 answers in two to four sentences from those passages only, at low effort to keep it fast and cheap. The system prompt is cached, so repeat questions cost less.
+4. **Stream.** The answer streams into the chat word by word, followed by links to the sources it used. Follow up questions carry the last two exchanges for context.
+
 ## Status
 
-The API route and chat UI are scaffolded on this site. Retrieval works today over the site content; the generation step is the phase 2 work.
+Live: open the chat button in the corner of any page. Everything runs inside the site's own API route, with no vector database or extra service to maintain.

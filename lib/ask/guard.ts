@@ -37,3 +37,31 @@ export function rateLimit(key: string, limit = 8, windowMs = 60_000) {
   if (hits.size > 5000) for (const [k, v] of hits) if (v.reset < now) hits.delete(k);
   return { ok: entry.count <= limit, remaining: Math.max(0, limit - entry.count), retryAfter: Math.ceil((entry.reset - now) / 1000) };
 }
+
+/** Global daily cap per server instance, so a traffic spike can't run up the bill. */
+const DAILY_CAP = Number(process.env.ASK_DAILY_CAP ?? 500);
+let day = new Date().toISOString().slice(0, 10);
+let used = 0;
+export function underDailyCap() {
+  const today = new Date().toISOString().slice(0, 10);
+  if (today !== day) {
+    day = today;
+    used = 0;
+  }
+  used += 1;
+  return used <= DAILY_CAP;
+}
+
+/** Validates the short conversation history the client sends for follow up questions. */
+export function cleanHistory(raw: unknown): { role: "user" | "assistant"; text: string }[] {
+  if (!Array.isArray(raw)) return [];
+  const turns = raw
+    .filter((t): t is { role: string; text: string } => !!t && typeof t === "object" && typeof (t as { text?: unknown }).text === "string")
+    .filter((t) => t.role === "user" || t.role === "assistant")
+    .slice(-4)
+    .map((t) => ({ role: t.role as "user" | "assistant", text: t.text.slice(0, 1200) }));
+  // The API needs the conversation to start with a user turn.
+  while (turns.length && turns[0].role !== "user") turns.shift();
+  // Drop history turns that look like injection attempts.
+  return turns.filter((t) => t.role === "assistant" || checkQuestion(t.text).ok);
+}
