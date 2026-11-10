@@ -1,5 +1,5 @@
 ---
-title: "My model named the right tool 87% of the time. It was usable 0% of the time."
+title: "A 3B model named the right tool 87% of the time. It was usable 0% of the time."
 description: "What fine tuning a 3B model for tool calling taught me about evaluation, near misses, and why an agent needs exact calls, not good intentions."
 date: "2026-11-10"
 tags: ["Fine tuning", "Function calling", "LLMs", "Evaluation"]
@@ -61,15 +61,7 @@ After fine tuning, on the same 200 examples, with the same prompt and the same s
 
 That is the real value of fine tuning a small model. It doesn't make it smarter. It teaches it the exact contract your system expects, and it makes it keep that contract every single time.
 
-## Lesson 1: tiny evaluation sets lie, beautifully
-
-My first evaluation runs looked perfect. Every checkpoint from step 600 onwards scored the maximum.
-
-Then I noticed the evaluation was running on **two examples**.
-
-Two examples can't tell a good model from a lucky one. When I reran on 200, the picture was still strong, but it was real: 98.8% instead of 100%, with clear weak spots I could actually work on. I now treat any perfect score on a small test set as a bug report, not a result.
-
-## Lesson 2: make your metric angry about hallucinations
+## Lesson 1: make your metric angry about hallucinations
 
 In an agent, calling a tool that doesn't exist is worse than calling nothing. It can trigger errors, retries or, in the worst case, the wrong action. So my scoring punishes it on purpose:
 
@@ -79,7 +71,7 @@ In an agent, calling a tool that doesn't exist is worse than calling nothing. It
 
 A lenient metric would have made my numbers look better. A strict one made the model better, because I could see exactly what it was doing wrong.
 
-## Lesson 3: check what your metric secretly rewards
+## Lesson 2: check what your metric secretly rewards
 
 Look at the chart again. The base model scores **86.8%** on "correct tool". For a model that produced zero usable calls, that should feel wrong. It did to me too.
 
@@ -87,7 +79,7 @@ The reason: when an answer isn't valid JSON, the scorer falls back to checking w
 
 I kept the scorer unchanged so the comparison stays fair, and I report the number with a footnote. But it's a good reminder that every metric has an opinion, and you should know what it is before you trust it.
 
-## Lesson 4: the last errors are near misses, and that's good news
+## Lesson 3: the last errors are near misses, and that's good news
 
 After fine tuning, the weakest score was parameter values at 85.5%. When I read the failures, a typical one looked like this:
 
@@ -99,7 +91,7 @@ Expected:   "size": "s"       and   "size": "l"
 
 The model understood perfectly. It just didn't know this API wants single letters. That's not a reasoning problem, it's a documentation problem, and it's fixable: put allowed values in the tool description, or normalise values before the call. Knowing *why* a model fails tells you whether to train more or just fix the interface.
 
-## Lesson 5: reinforcement learning teaches format fast and truth slowly
+## Lesson 4: reinforcement learning teaches format fast and truth slowly
 
 I also tried GRPO, a reinforcement learning method, to teach the same model to answer RAG questions in a strict "think, cite, answer" format. With four simple rule based rewards, it learned the format almost perfectly, with **99% compliance** across the logged run.
 
