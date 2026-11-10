@@ -14,7 +14,6 @@ timeline: "Mar 2025 to Sep 2025"
 tags: ["Fine tuning", "GRPO", "Qwen 2.5", "Mistral 7B", "Unsloth", "TRL", "DSPy", "Haystack", "UpTrain", "Evaluation"]
 order: 5
 links:
-  - { label: "Function calling SFT on GitHub", href: "https://github.com/Farayabaig/function-calling-sft-qwen3b" }
   - { label: "SFT checkpoints on Hugging Face", href: "https://huggingface.co/faraya1/Qwen2.5-3B-RAG-API-Finetuned-Models" }
   - { label: "GRPO for cited RAG answers on GitHub", href: "https://github.com/Farayabaig/grpo-rag-citations-qwen3b" }
   - { label: "GRPO checkpoints on Hugging Face", href: "https://huggingface.co/faraya1/genie-grpo-test-RAG-Qwen3B-faraya" }
@@ -39,7 +38,7 @@ A multi agent platform lives or dies on tool calls. A model that returns almost 
 
 ## Open source: function calling SFT on Qwen2.5 3B
 
-The core experiment is public in [function-calling-sft-qwen3b](https://github.com/Farayabaig/function-calling-sft-qwen3b). I fine tuned a 4 bit Qwen2.5 3B with LoRA on **10,000 examples** from Salesforce's public xLAM function calling dataset, on a single free Colab T4, then scored it on **200 held out examples** it never saw in training.
+The core experiment is public, with [checkpoints on Hugging Face](https://huggingface.co/faraya1/Qwen2.5-3B-RAG-API-Finetuned-Models). I fine tuned a 4 bit Qwen2.5 3B with LoRA on **10,000 examples** from Salesforce's public xLAM function calling dataset, on a single free Colab T4, then scored it on **200 held out examples** it never saw in training.
 
 <ThemedImage
   light="/projects/sft/results-light.png"
