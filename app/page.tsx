@@ -19,7 +19,7 @@ const personJsonLd = {
   description: site.description,
   address: { "@type": "PostalAddress", addressLocality: "Riyadh", addressCountry: "SA" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "FAST National University of Computer and Emerging Sciences" },
-  sameAs: [site.linkedin, site.github],
+  sameAs: [site.linkedin, site.github, site.huggingface],
   knowsAbout: [
     "Agentic AI",
     "Multi agent systems",

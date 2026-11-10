@@ -21,6 +21,7 @@ export const site = {
   email: "farayabaig05@gmail.com",
   linkedin: "https://www.linkedin.com/in/farayabaig05/",
   github: "https://github.com/Farayabaig",
+  huggingface: "https://huggingface.co/faraya1",
   /** Set NEXT_PUBLIC_CALENDLY_URL to your real booking link. Falls back to email. */
   booking:
     process.env.NEXT_PUBLIC_CALENDLY_URL ??
@@ -29,7 +30,7 @@ export const site = {
   locationLine: "Riyadh, KSA · Open to relocation anywhere",
   cvPath: "/cv/Faraya_Baig_AI_Resume.pdf",
   /** Review before launch: confirm this matches your actual status. */
-  workAuthorization: "Work authorization: based in KSA; open to relocation and visa sponsorship for roles in the EU and Canada.",
+  workAuthorization: "Work authorization: based in KSA and open to relocation worldwide, with a preference for the EU and Canada. Open to visa sponsorship.",
   keywords: [
     "AI Engineer",
     "Machine Learning Engineer",
@@ -291,6 +292,7 @@ export const skills: SkillGroup[] = [
       { name: "Prompt engineering", project: "fine-tuning-function-calling" },
       { name: "Fine tuning", project: "fine-tuning-function-calling" },
       { name: "Tool calling", project: "fine-tuning-function-calling" },
+      { name: "Reinforcement learning (GRPO)", project: "fine-tuning-function-calling" },
       { name: "MLOps" },
     ],
   },

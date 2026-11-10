@@ -57,7 +57,22 @@ function A(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return <a target="_blank" rel="noopener noreferrer" {...props} />;
 }
 
-const components = { Flow, Callout, Decision, a: A };
+/** Chart or figure with a light and a dark version, swapped with the site theme. */
+function ThemedImage({ light, dark, alt, width, height, caption }: { light: string; dark: string; alt: string; width: number; height: number; caption?: string }) {
+  return (
+    <figure className="not-prose my-8">
+      <div className="overflow-hidden rounded-[12px] border border-border">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={light} alt={alt} width={width} height={height} loading="lazy" className="block h-auto w-full dark:hidden" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={dark} alt={alt} width={width} height={height} loading="lazy" className="hidden h-auto w-full dark:block" />
+      </div>
+      {caption ? <figcaption className="mt-3 text-center text-sm text-muted">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+const components = { Flow, Callout, Decision, ThemedImage, a: A };
 
 export function MDX({ source }: { source: string }) {
   return (

@@ -8,12 +8,13 @@ solution: "Domain specific fine tuning of two small models, measured with a repe
 metrics:
   - { value: "2", label: "models fine tuned (3B and 7B)" }
   - { value: "Smaller", label: "and cheaper models in production" }
-  - { value: "3", label: "prompt strategies benchmarked with DSPy" }
+  - { value: "99%", label: "format compliance after GRPO training" }
 role: "AI Software Engineer"
 timeline: "Mar 2025 to Sep 2025"
-tags: ["Fine tuning", "Qwen 2.5", "Mistral 7B", "DSPy", "Haystack", "UpTrain", "Tool calling", "Evaluation"]
+tags: ["Fine tuning", "GRPO", "Qwen 2.5", "Mistral 7B", "Unsloth", "TRL", "DSPy", "Haystack", "UpTrain", "Evaluation"]
 order: 5
 links:
+  - { label: "GRPO checkpoints on Hugging Face", href: "https://huggingface.co/faraya1/genie-grpo-test-RAG-Qwen3B-faraya" }
   - { label: "RAG prompt tuning with DSPy on GitHub", href: "https://github.com/Genie-Experiments/rag-prompt-tuning-DSPy" }
 ---
 
@@ -54,7 +55,37 @@ The evaluation side of this work is public. I wrote [rag-prompt-tuning-DSPy](htt
 - **Public and internal data.** The same benchmark runs on PubMedQA and on Confluence documentation, so results aren't tuned to one domain.
 - **Full traceability.** Every prompt DSPy sends to the model is counted and logged, so you can see exactly what the optimizer tried.
 
-<Callout>The fine tuning code and data are private client work; the DSPy evaluation framework above is open source.</Callout>
+## Open source: GRPO for cited RAG answers
+
+Supervised fine tuning teaches a model what good answers look like. I also wanted to see how far **reinforcement learning** could push a small model, so I trained [Qwen2.5 3B with GRPO](https://huggingface.co/faraya1/genie-grpo-test-RAG-Qwen3B-faraya) to answer RAG questions in a strict format and cite its source:
+
+```text
+<think> which document answers the question, and why </think>
+<document id> 2 </document id>
+<answer> the answer, grounded in document 2 </answer>
+```
+
+Instead of a learned reward model, I wrote **four small rule based rewards**, which kept training cheap enough for a single free Colab T4:
+
+- **Right document:** credit for citing the correct document ID, plus a bonus when the answer is grounded in that document's text.
+- **Tags present:** partial credit for each of the three blocks.
+- **No extra text:** nothing outside the three blocks.
+- **Right order:** think, then cite, then answer.
+
+Splitting format and correctness into separate rewards gives the model credit for what it got right instead of an all or nothing score.
+
+<ThemedImage
+  light="/projects/grpo/reward-curve-light.png"
+  dark="/projects/grpo/reward-curve-dark.png"
+  alt="Line chart of GRPO training rewards from step 161 to 400: format compliance stays near 99 percent while the document reward averages 0.55."
+  width={1600}
+  height={840}
+  caption="Training rewards, steps 161 to 400 (the run resumed from a step 160 checkpoint)."
+/>
+
+**What it showed:** the model learned the format and kept it, with **99% format compliance** across the logged run. Citing the right, well grounded document held steady at about **0.55 out of 1**, which points to the next step: a softer document reward and a proper before and after evaluation on held out data.
+
+<Callout>The function calling fine tuning code and data are private client work. The DSPy evaluation framework and the GRPO pipeline are open source.</Callout>
 
 ## Key engineering decisions
 
