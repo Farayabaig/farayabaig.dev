@@ -272,7 +272,7 @@ export const skills: SkillGroup[] = [
   {
     category: "Agentic frameworks",
     skills: [
-      { name: "AutoGen" },
+      { name: "AutoGen", project: "genie-mentor" },
       { name: "CrewAI", project: "nl-to-sql-assistant" },
       { name: "LangChain", project: "call-intelligence" },
       { name: "Google ADK" },
@@ -311,7 +311,7 @@ export const skills: SkillGroup[] = [
       { name: "vLLM" },
       { name: "Transformers" },
       { name: "DSPy", project: "fine-tuning-function-calling" },
-      { name: "FastAPI" },
+      { name: "FastAPI", project: "genie-mentor" },
       { name: "scikit learn" },
     ],
   },
@@ -320,7 +320,7 @@ export const skills: SkillGroup[] = [
     skills: [
       { name: "Pinecone" },
       { name: "Qdrant" },
-      { name: "ChromaDB" },
+      { name: "ChromaDB", project: "genie-mentor" },
       { name: "PostgreSQL", project: "nl-to-sql-assistant" },
       { name: "MySQL" },
       { name: "NumPy" },

@@ -9,12 +9,14 @@ metrics:
   - { value: "50%+", label: "fewer senior support hours" }
   - { value: "3 → 1", label: "knowledge silos into one query path" }
   - { value: "5", label: "specialised agent roles" }
-role: "AI Software Engineer, architect and lead developer"
+role: "AI Software Engineer, core agent developer"
 timeline: "Mar 2025 to Sep 2025"
-tags: ["Multi agent systems", "RAG", "MCP", "LLMs", "Python"]
+tags: ["Multi agent systems", "RAG", "AutoGen", "MCP", "ChromaDB", "FastAPI", "Open source"]
 featured: true
 order: 2
-nda: true
+links:
+  - { label: "Genie Mentor on GitHub", href: "https://github.com/Genie-Experiments/genie-mentor-agent" }
+  - { label: "Contributors", href: "https://github.com/Genie-Experiments/genie-mentor-agent/graphs/contributors" }
 ---
 
 ## The problem
@@ -26,15 +28,28 @@ New engineers learned the codebase by asking people. The answers existed, but th
 <Flow
   caption="Each role is a separate agent with a narrow job and its own checks."
   steps={[
-    { label: "Planner", detail: "breaks the question down" },
-    { label: "Retriever", detail: "MCP tools: GitHub, Notion, Confluence" },
+    { label: "Planner", detail: "plans, then a refiner checks it" },
+    { label: "Source agents", detail: "knowledge base, web, MCP tools" },
     { label: "Executor", detail: "assembles the answer" },
     { label: "Evaluator", detail: "checks grounding" },
     { label: "Editor", detail: "cites and polishes" }
   ]}
 />
 
-A question first goes to a planner that decides which sources matter and in what order. The retriever reaches GitHub, Notion and Confluence through MCP tool interfaces, so adding a new source means adding a tool rather than rewriting the pipeline. The executor drafts an answer, the evaluator checks that every claim is grounded in retrieved material, and the editor produces the final, cited response.
+A question first goes to a planner that decides which sources matter and in what order, and a refiner checks that plan before anything runs. Source agents then search the knowledge base and the web, and reach GitHub, Notion and Confluence through MCP tool interfaces, so adding a new source means adding a tool rather than rewriting the pipeline. Agents talk to each other over AutoGen. The executor drafts an answer, the evaluator checks that every claim is grounded in retrieved material, and the editor produces the final, cited response.
+
+## My contributions
+
+The code is open source, so you can see exactly what I built. Across **45 commits and roughly 11,000 lines** between May and July 2025, my work centred on the agents themselves:
+
+- **The first agentic RAG backend and UI.** The FastAPI backend, document upload API and Streamlit chat interface the platform grew from.
+- **The planner and its refiner.** Implemented the planner agent, then added chain of thought planning, a refiner with attempt history and context management for follow up questions.
+- **Better retrieval.** Added document reranking and metadata boosting to the knowledge base agent, upgraded the embedding model and integrated multi hop RAG.
+- **Evaluation you can inspect.** Extended the evaluation agent to return structured reasoning and report its own LLM usage.
+- **Observability across every agent.** A shared usage schema that tracks the model and tokens each agent uses, plus conversation storage so the chat answer always matches the agent trace.
+- **Reliability.** Centralized error handling for the agent service, with a guide for the team.
+
+[Browse the repository](https://github.com/Genie-Experiments/genie-mentor-agent) or [see the contributors](https://github.com/Genie-Experiments/genie-mentor-agent/graphs/contributors).
 
 ## Key engineering decisions
 
