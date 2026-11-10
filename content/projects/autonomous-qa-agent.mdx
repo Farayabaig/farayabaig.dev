@@ -1,9 +1,9 @@
 ---
-title: "Autonomous QA Agent for the NOVA microhypervisor"
-company: "Ebryx, for BlueRock.io"
+title: "Autonomous QA agent for hypervisor builds"
+company: "Ebryx"
 context: "Enterprise · Hypervisor QA"
 summary: "An agent that self qualifies hypervisor builds across 29 hardware configurations and cloud bare metal, turning multi hour supervised test cycles into minutes."
-problem: "Every NOVA build needed an engineer to babysit a multi hour qualification run across a large hardware matrix."
+problem: "Every hypervisor build needed an engineer to babysit a multi hour qualification run across a large hardware matrix."
 solution: "An autonomous QA agent, driven from Slack in plain language, that plans the runs, executes them, retries smartly and reports back."
 metrics:
   - { value: "29", label: "hardware configurations" }
@@ -15,13 +15,11 @@ tags: ["Agentic AI", "Python", "Slack bot", "Cloud bare metal", "MCP", "AI secur
 featured: true
 order: 1
 nda: true
-links:
-  - { label: "About the NOVA microhypervisor", href: "https://hypervisor.org/" }
 ---
 
 ## The problem
 
-[NOVA](https://hypervisor.org/) is an open source microhypervisor, so every build has to be proven on real hardware before anyone can trust it. Qualification meant running suites across **29 hardware configurations and cloud bare metal servers**, with an engineer supervising for hours: kicking off runs, watching for hangs, rerunning flaky jobs and stitching the results together. That is expensive senior time spent on work that follows a predictable pattern, which makes it a strong fit for an agent.
+The product is a hypervisor, so every build has to be proven on real hardware before anyone can trust it. Qualification meant running suites across **29 hardware configurations and cloud bare metal servers**, with an engineer supervising for hours: kicking off runs, watching for hangs, rerunning flaky jobs and stitching the results together. That is expensive senior time spent on work that follows a predictable pattern, which makes it a strong fit for an agent.
 
 ## Architecture
 
@@ -60,8 +58,3 @@ Blind reruns hide real bugs and waste machine hours. The agent classifies failur
 - Self serve test runs on demand for the whole team.
 - Lower cloud spend and fewer flaky reruns thanks to guardrails and smarter retries.
 - Automated AI security scanning added to LLM deployments, replacing periodic manual review with **checks on every build**.
-
-## What I would do next
-
-Feed historical run data back into the planner so it can prioritise the configurations most likely to fail for a given change, and expose the agent's decisions as a trace that reviewers can audit after the fact.
-

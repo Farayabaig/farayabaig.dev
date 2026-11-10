@@ -199,10 +199,9 @@ export const experience: Role[] = [
     title: "AI Software Engineer",
     start: "Oct 2025",
     end: "Present",
-    client: "BlueRock.io",
     summary: "Ship and secure agents",
     highlights: [
-      "Built an autonomous QA agent that self qualifies NOVA microhypervisor builds across 29 hardware configurations and cloud bare metal, cutting multi hour supervised cycles to minutes.",
+      "Built an autonomous QA agent that self qualifies hypervisor builds across 29 hardware configurations and cloud bare metal, cutting multi hour supervised cycles to minutes.",
       "Shipped it as a Slack bot with natural language commands, budget guardrails and failure aware retries that cut cloud spend and flaky reruns.",
       "Ran adversarial testing and threat modeling on LLMs, agentic frameworks and MCP systems, uncovering real attack vectors before they could be exploited.",
       "Added automated AI security scanning to LLM deployments, replacing periodic manual review with checks on every build.",
