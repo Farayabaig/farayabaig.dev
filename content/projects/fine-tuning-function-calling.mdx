@@ -8,11 +8,13 @@ solution: "Domain specific fine tuning of two small models, measured with a repe
 metrics:
   - { value: "2", label: "models fine tuned (3B and 7B)" }
   - { value: "Smaller", label: "and cheaper models in production" }
+  - { value: "3", label: "prompt strategies benchmarked with DSPy" }
 role: "AI Software Engineer"
 timeline: "Mar 2025 to Sep 2025"
-tags: ["Fine tuning", "Qwen 2.5", "Mistral 7B", "DSPy", "Tool calling", "Evaluation"]
+tags: ["Fine tuning", "Qwen 2.5", "Mistral 7B", "DSPy", "Haystack", "UpTrain", "Tool calling", "Evaluation"]
 order: 5
-nda: true
+links:
+  - { label: "RAG prompt tuning with DSPy on GitHub", href: "https://github.com/Genie-Experiments/rag-prompt-tuning-DSPy" }
 ---
 
 ## The problem
@@ -30,6 +32,29 @@ A multi agent platform lives or dies on tool calls. A model that returns almost 
     { label: "Ship", detail: "smaller, cheaper models" }
   ]}
 />
+
+## Open source: RAG prompt tuning with DSPy
+
+The evaluation side of this work is public. I wrote [rag-prompt-tuning-DSPy](https://github.com/Genie-Experiments/rag-prompt-tuning-DSPy) to answer a practical question: **is an automatically optimized prompt actually better than one an engineer writes by hand?**
+
+<Flow
+  caption="Same retriever, same model, three prompts, two kinds of score."
+  steps={[
+    { label: "Datasets", detail: "PubMedQA and internal Confluence docs" },
+    { label: "RAG pipeline", detail: "Haystack, BM25 retrieval, GPT-4o" },
+    { label: "3 prompts", detail: "standard, hand written, DSPy optimized" },
+    { label: "Score", detail: "similarity minus a length penalty" },
+    { label: "Hallucination check", detail: "UpTrain factual accuracy" }
+  ]}
+/>
+
+- **Three strategies, head to head.** A standard RAG prompt, a hand written prompt with strict grounding rules, and a prompt compiled by DSPy's BootstrapFewShot optimizer.
+- **A metric that rewards the right thing.** Semantic similarity to the reference answer, minus a penalty for long answers, so the optimizer can't win by rambling.
+- **Hallucination checks on top.** Every answer is scored for factual accuracy with UpTrain, because similar wording is not the same as true.
+- **Public and internal data.** The same benchmark runs on PubMedQA and on Confluence documentation, so results aren't tuned to one domain.
+- **Full traceability.** Every prompt DSPy sends to the model is counted and logged, so you can see exactly what the optimizer tried.
+
+<Callout>The fine tuning code and data are private client work; the DSPy evaluation framework above is open source.</Callout>
 
 ## Key engineering decisions
 
