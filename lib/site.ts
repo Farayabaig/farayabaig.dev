@@ -65,8 +65,8 @@ export const hero = {
 };
 
 /**
- * Outcome metrics for the proof strip. Every number is stated on the resume;
- * each one says what changed for the business, not just a count.
+ * Profile at a glance. Years, industries and model count come from the resume;
+ * the 60% voice assistant figure was supplied by Faraya (add it to the resume too).
  * `value` as a number counts up; as a string it is shown as is.
  */
 export type Metric = {
@@ -77,10 +77,10 @@ export type Metric = {
 };
 
 export const proofMetrics: Metric[] = [
-  { value: "Minutes", label: "Build qualification time, down from multi hour supervised runs" },
-  { value: 50, suffix: "%+", label: "Fewer senior engineer hours spent on onboarding support" },
-  { value: 5, prefix: "< ", suffix: "%", label: "Word error rate on production call audio" },
-  { value: 50, prefix: "~", suffix: "%", label: "Faster data labeling, automated with LLMs" },
+  { value: 4, suffix: "+", label: "Years building AI systems" },
+  { value: 4, label: "Industries: healthcare, contact center, software and cybersecurity" },
+  { value: 10, label: "AI models shipped to production across speech, NLP and LLMs" },
+  { value: 60, suffix: "%", label: "Faster complaint resolution than human agents, with a voice to voice AI assistant" },
 ];
 
 export const pillars = [
