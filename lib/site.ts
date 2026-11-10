@@ -354,7 +354,6 @@ export const markets: Record<
     emphasis: string[];
     featured: string[];
     cvFile: string;
-    notes: string;
   }
 > = {
   ksa: {
@@ -368,7 +367,6 @@ export const markets: Record<
     ],
     featured: ["autonomous-qa-agent", "red-teaming-agentic-systems", "genie-mentor"],
     cvFile: "/cv/Faraya_Baig_AI_Resume.pdf",
-    notes: "Two page CV. Photo acceptable.",
   },
   eu: {
     label: "EU",
@@ -381,7 +379,6 @@ export const markets: Record<
     ],
     featured: ["fine-tuning-function-calling", "red-teaming-agentic-systems", "genie-mentor"],
     cvFile: "/cv/Faraya_Baig_AI_Resume.pdf",
-    notes: "Two page CV. No photo.",
   },
   canada: {
     label: "Canada",
@@ -394,6 +391,5 @@ export const markets: Record<
     ],
     featured: ["genie-mentor", "call-intelligence", "autonomous-qa-agent"],
     cvFile: "/cv/Faraya_Baig_AI_Resume.pdf",
-    notes: "Two page, achievement focused CV. No photo, age or marital status.",
   },
 };

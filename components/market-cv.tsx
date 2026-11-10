@@ -78,7 +78,6 @@ export function MarketCV({ titles }: { titles: Record<string, string> }) {
               <Download aria-hidden /> Download {cfg.label} CV (PDF)
             </a>
           </Button>
-          <span className="text-xs text-muted">{cfg.notes}</span>
         </div>
       </div>
     </section>
