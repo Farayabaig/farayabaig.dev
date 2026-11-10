@@ -22,6 +22,10 @@ const FALLBACK =
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
   const rl = rateLimit(ip);
+  const daily = rateLimit(`day:${ip}`, Number(process.env.ASK_PER_IP_DAILY ?? 30), 86_400_000);
+  if (rl.ok && !daily.ok) {
+    return NextResponse.json({ error: "You've reached today's question limit. Email Faraya at farayabaig05@gmail.com for anything else." }, { status: 429 });
+  }
   if (!rl.ok) {
     return NextResponse.json(
       { error: "Too many questions. Try again in a minute." },
@@ -81,11 +85,16 @@ export async function POST(req: Request) {
         );
         send(controller, { type: "done" });
       } catch (err) {
-        if (err instanceof Anthropic.RateLimitError) console.error("[ask] rate limited by API");
-        else if (err instanceof Anthropic.AuthenticationError) console.error("[ask] invalid ANTHROPIC_API_KEY");
-        else if (err instanceof Anthropic.APIError) console.error(`[ask] API error ${err.status}: ${err.message}`);
+        // A coarse, non sensitive reason helps diagnose setup problems from the browser.
+        let reason = "upstream";
+        if (err instanceof Anthropic.RateLimitError) reason = "rate_limited";
+        else if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.PermissionDeniedError) reason = "auth";
+        else if (err instanceof Anthropic.NotFoundError) reason = "not_found";
+        else if (err instanceof Anthropic.BadRequestError) reason = "bad_request";
+        else if (err instanceof Anthropic.APIConnectionError) reason = "connection";
+        if (err instanceof Anthropic.APIError) console.error(`[ask] API error ${err.status} (${reason}): ${err.message}`);
         else console.error("[ask] unexpected error", err);
-        send(controller, { type: "error", message: FALLBACK });
+        send(controller, { type: "error", message: FALLBACK, reason });
       } finally {
         controller.close();
       }

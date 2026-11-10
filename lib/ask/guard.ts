@@ -39,7 +39,7 @@ export function rateLimit(key: string, limit = 8, windowMs = 60_000) {
 }
 
 /** Global daily cap per server instance, so a traffic spike can't run up the bill. */
-const DAILY_CAP = Number(process.env.ASK_DAILY_CAP ?? 500);
+const DAILY_CAP = Number(process.env.ASK_DAILY_CAP ?? 200);
 let day = new Date().toISOString().slice(0, 10);
 let used = 0;
 export function underDailyCap() {
