@@ -1,9 +1,9 @@
 ---
-title: "Autonomous QA agent for hypervisor builds"
+title: "Autonomous QA agent for the NOVA microhypervisor"
 company: "Ebryx"
 context: "Enterprise · Hypervisor QA"
 summary: "An agent that self qualifies hypervisor builds across 29 hardware configurations and cloud bare metal, turning multi hour supervised test cycles into minutes."
-problem: "Every hypervisor build needed an engineer to babysit a multi hour qualification run across a large hardware matrix."
+problem: "Every NOVA build needed an engineer to babysit a multi hour qualification run across a large hardware matrix."
 solution: "An autonomous QA agent, driven from Slack in plain language, that plans the runs, executes them, retries smartly and reports back."
 metrics:
   - { value: "29", label: "hardware configurations" }
@@ -15,11 +15,13 @@ tags: ["Agentic AI", "Python", "Slack bot", "Cloud bare metal", "MCP", "AI secur
 featured: true
 order: 1
 nda: true
+links:
+  - { label: "About the NOVA microhypervisor", href: "https://hypervisor.org/" }
 ---
 
 ## The problem
 
-The product is a hypervisor, so every build has to be proven on real hardware before anyone can trust it. Qualification meant running suites across **29 hardware configurations and cloud bare metal servers**, with an engineer supervising for hours: kicking off runs, watching for hangs, rerunning flaky jobs and stitching the results together. That is expensive senior time spent on work that follows a predictable pattern, which makes it a strong fit for an agent.
+[NOVA](https://hypervisor.org/) is an open source microhypervisor, so every build has to be proven on real hardware before anyone can trust it. Qualification meant running suites across **29 hardware configurations and cloud bare metal servers**, with an engineer supervising for hours: kicking off runs, watching for hangs, rerunning flaky jobs and stitching the results together. That is expensive senior time spent on work that follows a predictable pattern, which makes it a strong fit for an agent.
 
 ## Architecture
 
